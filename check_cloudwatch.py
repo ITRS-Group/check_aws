@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import nagiosplugin
 
 from boto import ec2
-from cloudwatch.cli import parse_cmdline
+from ec2cw.cli import parse_cmdline
 
 
 class CloudWatch:

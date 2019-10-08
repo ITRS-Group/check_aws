@@ -1,1 +1,2 @@
-# system-addons-plugins-op5-check_ec2cw
+# check_ec2cw: EC2 CloudWatch Nagios Plugin
+
