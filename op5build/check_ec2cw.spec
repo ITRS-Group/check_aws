@@ -7,7 +7,7 @@ Name: monitor-plugin-check_ec2cw
 Version: %{op5version}
 Release: %{op5release}%{?dist}
 Vendor: OP5 AB
-License: GPL-2.0
+License: GPL-3.0
 Group: op5/system-addons
 URL: http://www.op5.com/support
 Prefix: /opt/plugins
