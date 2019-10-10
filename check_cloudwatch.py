@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 
 from nagiosplugin import guarded, Check, ScalarContext
