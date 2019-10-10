@@ -12,7 +12,7 @@ TimeFrame = namedtuple("TimeFrame", ["start", "end"])
 
 class CloudWatchResource(nagiosplugin.Resource):
     def __init__(self, cfg):
-        self._cfg = cfg
+        self.cfg = cfg
 
         now = datetime.utcnow()
         self.frame = TimeFrame(
@@ -20,26 +20,30 @@ class CloudWatchResource(nagiosplugin.Resource):
             end=now - timedelta(seconds=cfg.delta)
         )
 
-        self.connection = cloudwatch.connect_to_region(
-            cfg.region, profile_name=cfg.profile
+    @property
+    def payload(self):
+        return dict(
+            period=self.cfg.period,
+            start_time=self.frame.start,
+            end_time=self.frame.end,
+            metric_name=self.cfg.metric,
+            namespace=self.cfg.namespace,
+            statistics=self.cfg.statistic,
+            dimensions=self.cfg.dimensions,
         )
 
     def probe(self):
-        points = self.connection.get_metric_statistics(
-            period=self._cfg.period,
-            start_time=self.frame.start,
-            end_time=self.frame.end,
-            metric_name=self._cfg.metric,
-            namespace=self._cfg.namespace,
-            statistics=self._cfg.statistic,
-            dimensions=self._cfg.dimensions,
+        connection = cloudwatch.connect_to_region(
+            self.cfg.region, profile_name=self.cfg.profile
         )
+
+        points = connection.get_metric_statistics(self.payload)
 
         if len(points) < 1:
             return []
 
         point = points[0]
-        return [nagiosplugin.Metric(self._cfg.metric, point[self._cfg.statistic])]
+        return [nagiosplugin.Metric(self.cfg.metric, point[self.cfg.statistic])]
 
     @property
     def name(self):
