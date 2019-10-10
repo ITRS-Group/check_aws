@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "check_ec2cw"
+version = "0.1.0"
+description = "EC2 CloudWatch Nagios Plugin"
+authors = ["Robert Wikman <rwikman@op5.com>"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.4.0"
+pytest-cov = "^2.7.1"
+codecov = "^2.0.15"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
