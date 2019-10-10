@@ -18,6 +18,7 @@ BuildRequires: python34
 Requires: python36
 BuildRequires: python36
 %endif
+BuildRequires: curl
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 BuildArch: noarch
@@ -29,6 +30,7 @@ Flexible Nagios plugin for monitoring CloudWatch-enabled EC2 instances.
 %setup -q -n %{name}-%{version}
 
 %build
+curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 python3 -m venv .venv
 source .venv/bin/activate
 python -m poetry update
