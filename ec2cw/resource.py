@@ -37,7 +37,7 @@ class CloudWatchResource(nagiosplugin.Resource):
             self.cfg.region, profile_name=self.cfg.profile
         )
 
-        points = connection.get_metric_statistics(self.payload)
+        points = connection.get_metric_statistics(**self.payload)
 
         if len(points) < 1:
             return []
