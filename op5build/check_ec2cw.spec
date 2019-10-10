@@ -32,10 +32,8 @@ Flexible Nagios plugin for monitoring CloudWatch-enabled EC2 instances.
 %build
 python3 -m venv .venv
 source .venv/bin/activate
-curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+python -m pip install poetry
 python -m poetry update
-python -m pip install pytest
-python -m pytest
 
 %{__install} -D -p %{exec_path} %{buildroot}/%{plugin_root}/%{exec_path}
 cp --archive %{pkg_path} %{buildroot}/%{plugin_root}/
