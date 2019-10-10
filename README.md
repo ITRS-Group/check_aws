@@ -53,10 +53,15 @@ optional arguments:
 ```
 
 
+Credentials and authentication
+---
+
+This plugin *currently* only supports authentication using credentials stored in ~/.aws/credentials.
+
 Usage examples
 ---
 
-**VPN tunnel status**
+**AWS/VPN tunnel**
 
 Checks the state of an AWS VPN tunnel, with *Dimensions* to specify an interface.
 
