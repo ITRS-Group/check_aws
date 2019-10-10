@@ -4,6 +4,18 @@ from enum import Enum
 
 from boto import ec2
 
+from .consts import STATISTICS
+
+
+class DimensionParser(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        kvs = {}
+        for pair in values.split(','):
+            k, v = pair.split('=')
+            kvs[k] = v
+
+        setattr(namespace, self.dest, kvs)
+
 
 class Default(Enum):
     namespace = None
@@ -16,14 +28,7 @@ class Default(Enum):
     warning = 0
     critical = 0
     verbosity = 0
-    delta = None
-    ratio = False
-    divisor_namespace = None
-    divisor_dimensions = None
-    divisor_statistic = None
-
-
-STATISTICS = ["Average", "Sum", "SampleCount", "Maximum", "Minimum"]
+    delta = 0
 
 
 opts = [
@@ -65,7 +70,7 @@ opts = [
         ["-d", "--dimensions"],
         {
             "dest": "dimensions",
-            "action": "store",
+            "action": DimensionParser,
             "type": str,
             "default": Default.dimensions.value,
             "help": "Dimensions of one or more metrics: dimension=value[,dimension=value...]"
@@ -97,7 +102,6 @@ opts = [
         {
             "dest": "warning",
             "action": "store",
-            "type": int,
             "default": Default.warning.value,
             "help": "Warning if threshold is outside range (default: %(default)s)"
         }
@@ -107,7 +111,6 @@ opts = [
         {
             "dest": "critical",
             "action": "store",
-            "type": int,
             "default": Default.critical.value,
             "help": "Critical if threshold is outside range (default: %(default)s)"
         }
@@ -148,48 +151,8 @@ opts = [
             "action": "store",
             "type": int,
             "default": Default.lag.value,
-            "help": "delay in seconds to add to starting time for gathering metric."
+            "help": "Delay in seconds to add to starting time for gathering metric."
                     "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
-        }
-    ),
-    (
-        ["-R", "--ratio"],
-        {
-            "dest": "ratio",
-            "action": "store_true",
-            "default": Default.ratio.value,
-            "help": "Activate ratio mode (default: %(default)s)"
-        }
-    ),
-    (
-        ["--divisor-namespace"],
-        {
-            "dest": "divisor_namespace",
-            "action": "store",
-            "type": str,
-            "default": Default.divisor_namespace.value,
-            "help": "Namespace for CloudWatch metric of the divisor"
-        }
-    ),
-    (
-        ["--divisor-dimensions"],
-        {
-            "dest": "divisor_dimensions",
-            "action": "store",
-            "type": str,
-            "default": Default.divisor_dimensions.value,
-            "help": "Dimensions of CloudWatch metric of the divisor"
-        }
-    ),
-    (
-        ["--divisor-statistic"],
-        {
-            "dest": "divisor_statistic",
-            "action": "store",
-            "type": str,
-            "default": Default.divisor_statistic.value,
-            "choices": STATISTICS,
-            "help": "Statistic used to evaluate metric of the divisor"
         }
     ),
 ]
