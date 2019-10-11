@@ -1,12 +1,15 @@
 check_ec2cw: EC2 CloudWatch Nagios Plugin
 ===
 
-Flexible Nagios plugin for monitoring CloudWatch-enabled EC2 instances.
+Flexible Nagios plugin for monitoring CloudWatch-enabled AWS instances.
 
 It makes use of [boto/boto](https://github.com/boto/boto) for interacting with AWS,
 and [flyingcircus/nagiosplugin](https://bitbucket.org/flyingcircus/nagiosplugin/src/default) to convert the results
 to a Nagios-interpretable format.
 
+Visit the [AWS Console](https://console.aws.amazon.com/cloudwatch) or check out the
+[AWSEC2 UserGuide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html) 
+for a list of metrics that can be used with this plugin.
 
 Usage
 ---
@@ -58,21 +61,39 @@ Credentials and authentication
 
 This plugin *currently* only supports authentication using credentials stored in ~/.aws/credentials.
 
+
 Usage examples
 ---
 
 **AWS/VPN tunnel**
 
-Checks the state of an AWS VPN tunnel, with *Dimensions* to specify an interface.
-
-Input:
+AWS/VPN availability
 
 ```
 $ python check_cloudwatch.py --metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4
 ```
 
-Output:
+**Free storage space**
+
+Free storage space in AWS RDS.
 
 ```
-EC2CW CRITICAL - Metric AWS/VPN:TunnelState (TunnelIpAddress=1.2.3.4) | TunnelState=0.0;@0;@0
+$ python check_ec2cw.py --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000 
 ```
+
+**Credit usage**
+
+EC2 instance credit usage.
+
+```
+$ python check_ec2cw.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
+```
+
+**CPU utilization**
+
+EC2 instance CPU utilization.
+
+```
+python check_ec2cw.py --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
+```
+
