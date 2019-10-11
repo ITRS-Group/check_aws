@@ -1,38 +1,8 @@
-import argparse
-
-from enum import Enum
-
 from boto import ec2
 
-from .consts import STATISTICS
+from ec2cw.consts import STATISTICS, Default
 
-
-class DimensionParser(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        kvs = {}
-        for pair in values.split(','):
-            k, v = pair.split('=')
-            if not v:
-                raise ValueError("Dimension {} value cannot be empty".format(k))
-
-            kvs[k] = v
-
-        setattr(namespace, self.dest, kvs)
-
-
-class Default(Enum):
-    namespace = None
-    metric = None
-    dimensions = None
-    profile = "default"
-    statistic = "Average"
-    period = 60
-    lag = 0
-    warning = 0
-    critical = 0
-    verbosity = 0
-    delta = 0
-
+from .parsers import DimensionParser
 
 opts = [
     (
@@ -159,12 +129,3 @@ opts = [
         }
     ),
 ]
-
-
-def parse_cmdline(args):
-    parser = argparse.ArgumentParser(description="Plugin for monitoring CloudWatch-enabled AWS instances")
-
-    for opt, conf in opts:
-        parser.add_argument(*opt, **conf)
-
-    return parser.parse_args(args)
