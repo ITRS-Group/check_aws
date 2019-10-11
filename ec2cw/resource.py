@@ -19,10 +19,7 @@ class CloudWatchResource(nagiosplugin.Resource):
             start=now - timedelta(seconds=cfg.period + cfg.lag),
             end=now - timedelta(seconds=cfg.delta)
         )
-
-    @property
-    def payload(self):
-        return dict(
+        self.payload = dict(
             period=self.cfg.period,
             start_time=self.frame.start,
             end_time=self.frame.end,
@@ -30,6 +27,7 @@ class CloudWatchResource(nagiosplugin.Resource):
             namespace=self.cfg.namespace,
             statistics=self.cfg.statistic,
             dimensions=self.cfg.dimensions,
+            unit=self.cfg.unit,
         )
 
     def probe(self):

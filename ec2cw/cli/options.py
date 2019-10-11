@@ -18,6 +18,17 @@ opts = [
         }
     ),
     (
+        ["-u", "--unit"],
+        {
+            "dest": "unit",
+            "action": "store",
+            "type": str,
+            "default": Default.unit.value,
+            "required": False,
+            "help": "Metric Unit"
+        }
+    ),
+    (
         ["-m", "--metric"],
         {
             "dest": "metric",
