@@ -4,6 +4,10 @@ import argparse
 class DimensionParser(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         kvs = {}
+
+        if not values:
+            return
+
         for pair in values.split(','):
             k, v = pair.split('=')
             if not v:

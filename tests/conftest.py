@@ -1,6 +1,6 @@
 import pytest
 
-from ec2cw import parse_cmdline, CloudWatchResource
+from aws import parse_cmdline, CloudWatchResource
 
 
 @pytest.fixture

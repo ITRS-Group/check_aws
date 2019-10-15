@@ -1,4 +1,4 @@
-from ec2cw.summary import CloudWatchSummary
+from aws.summary import CloudWatchSummary
 
 
 def test_probe_result():

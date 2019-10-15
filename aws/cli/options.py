@@ -1,6 +1,6 @@
 from boto import ec2
 
-from ec2cw.consts import STATISTICS, Default
+from aws.consts import STATISTICS, Default
 
 from .parsers import DimensionParser
 
@@ -56,6 +56,7 @@ opts = [
             "dest": "dimensions",
             "action": DimensionParser,
             "type": str,
+            "nargs": "?",
             "default": Default.dimensions.value,
             "help": "Dimensions of one or more metrics: dimension=value[,dimension=value...]"
         }
@@ -114,6 +115,7 @@ opts = [
             "dest": "period",
             "action": "store",
             "type": int,
+            "nargs": "?",
             "default": Default.period.value,
             "help": "Period in seconds over which the statistic is applied (default: %(default)s)"
         }
@@ -137,6 +139,17 @@ opts = [
             "default": Default.lag.value,
             "help": "Delay in seconds to add to starting time for gathering metric."
                     "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
+        }
+    ),
+    (
+        ["-C", "--credentials"],
+        {
+            "dest": "credentials_file",
+            "action": "store",
+            "type": str,
+            "nargs": "?",
+            "default": Default.credentials_file.value,
+            "help": "File containing AWS credentials"
         }
     ),
 ]

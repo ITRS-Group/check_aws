@@ -1,9 +1,9 @@
 %define plugin_root /opt/plugins
-%define exec_path check_ec2cw.py
-%define pkg_path ec2cw
+%define exec_path check_aws.py
+%define pkg_path aws
 
 Summary: EC2 CloudWatch Nagios Plugin
-Name: monitor-plugin-check_ec2cw
+Name: monitor-plugin-check_aws
 Version: %{op5version}
 Release: %{op5release}%{?dist}
 Vendor: OP5 AB

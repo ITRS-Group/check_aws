@@ -1,4 +1,4 @@
-check_ec2cw: EC2 CloudWatch Nagios Plugin
+check_aws: EC2 CloudWatch Nagios Plugin
 ===
 
 Flexible Nagios plugin for monitoring CloudWatch-enabled AWS instances.
@@ -78,7 +78,7 @@ $ python check_cloudwatch.py --metric TunnelState --namespace AWS/VPN -r eu-west
 Free storage space in AWS RDS.
 
 ```
-$ python check_ec2cw.py --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000 
+$ python check_aws.py --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000
 ```
 
 **Credit usage**
@@ -86,7 +86,7 @@ $ python check_ec2cw.py --metric FreeStorageSpace --namespace AWS/RDS -r eu-west
 EC2 instance credit usage.
 
 ```
-$ python check_ec2cw.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
+$ python check_aws.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
 ```
 
 **CPU utilization**
@@ -94,6 +94,6 @@ $ python check_ec2cw.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1
 EC2 instance CPU utilization.
 
 ```
-python check_ec2cw.py --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
+python check_aws.py --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
 ```
 

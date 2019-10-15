@@ -3,7 +3,7 @@
 import sys
 
 from nagiosplugin import guarded, Check, ScalarContext
-from ec2cw import parse_cmdline, CloudWatchResource, CloudWatchSummary
+from aws import parse_cmdline, CloudWatchResource, CloudWatchSummary
 
 
 def produce_target(cfg):

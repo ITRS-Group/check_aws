@@ -1,13 +1,19 @@
+import os
+
 from collections import namedtuple
 from datetime import datetime, timedelta
 
 import nagiosplugin
 
 from boto.ec2 import cloudwatch
+from boto.provider import Provider
+from boto.pyami.config import Config
 
 from .consts import NAME
 
 TimeFrame = namedtuple("TimeFrame", ["start", "end"])
+
+
 
 
 class CloudWatchResource(nagiosplugin.Resource):
@@ -17,7 +23,7 @@ class CloudWatchResource(nagiosplugin.Resource):
         now = datetime.utcnow()
         self.frame = TimeFrame(
             start=now - timedelta(seconds=cfg.period + cfg.lag),
-            end=now - timedelta(seconds=cfg.delta)
+            end=now - timedelta(seconds=cfg.delta),
         )
         self.payload = dict(
             period=self.cfg.period,
@@ -31,8 +37,16 @@ class CloudWatchResource(nagiosplugin.Resource):
         )
 
     def probe(self):
+        def get_config(keys):
+            return {k: config.get(self.cfg.profile, k) for k in keys}
+
+        config = Config(do_load=False)
+        config.load_from_path(
+            self.cfg.credentials_file or get_default_credentials_file()
+        )
         connection = cloudwatch.connect_to_region(
-            self.cfg.region, profile_name=self.cfg.profile
+            self.cfg.region,
+            **get_config(["aws_access_key_id", "aws_secret_access_key"])
         )
 
         points = connection.get_metric_statistics(**self.payload)

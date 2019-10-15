@@ -1,6 +1,6 @@
 from enum import Enum
 
-NAME = "EC2CW"
+NAME = "AWS"
 STATISTICS = ["Average", "Sum", "SampleCount", "Maximum", "Minimum"]
 UNITS = [
     "Percent", "Count",
@@ -17,6 +17,7 @@ class Default(Enum):
     metric = None
     dimensions = None
     unit = None
+    credentials_file = None
     profile = "default"
     statistic = "Average"
     period = 60
