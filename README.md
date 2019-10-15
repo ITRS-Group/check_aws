@@ -27,7 +27,7 @@ Plugin for monitoring CloudWatch-enabled AWS instances
 optional arguments:
   -h, --help            show this help message and exit
   -r {ap-south-1,us-east-2,us-east-1,us-west-1,us-west-2,ca-central-1,eu-central-1,cn-north-1,ap-southeast-1,eu-west-2,ap-southeast-2,ap-northeast-2,us-gov-west-1,sa-east-1,ap-northeast-1,eu-west-1}, --region {ap-south-1,us-east-2,us-east-1,us-west-1,us-west-2,ca-central-1,eu-central-1,cn-north-1,ap-southeast-1,eu-west-2,ap-southeast-2,ap-northeast-2,us-gov-west-1,sa-east-1,ap-northeast-1,eu-west-1}
-                        CloudWatch metric name
+                        AWS region name
   -m METRIC, --metric METRIC
                         CloudWatch metric name
   -n NAMESPACE, --namespace NAMESPACE

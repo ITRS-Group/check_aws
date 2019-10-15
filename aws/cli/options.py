@@ -14,7 +14,7 @@ opts = [
             "default": Default.metric.value,
             "choices": [region.name for region in ec2.get_regions("ec2")],
             "required": True,
-            "help": "CloudWatch metric name"
+            "help": "AWS region name"
         }
     ),
     (
