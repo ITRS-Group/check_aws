@@ -6,14 +6,11 @@ from datetime import datetime, timedelta
 import nagiosplugin
 
 from boto.ec2 import cloudwatch
-from boto.provider import Provider
 from boto.pyami.config import Config
 
 from .consts import NAME
 
 TimeFrame = namedtuple("TimeFrame", ["start", "end"])
-
-
 
 
 class CloudWatchResource(nagiosplugin.Resource):
@@ -41,9 +38,7 @@ class CloudWatchResource(nagiosplugin.Resource):
             return {k: config.get(self.cfg.profile, k) for k in keys}
 
         config = Config(do_load=False)
-        config.load_from_path(
-            self.cfg.credentials_file or get_default_credentials_file()
-        )
+        config.load_from_path(self.cfg.credentials_file)
         connection = cloudwatch.connect_to_region(
             self.cfg.region,
             **get_config(["aws_access_key_id", "aws_secret_access_key"])
