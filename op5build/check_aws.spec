@@ -11,14 +11,8 @@ License: GPL-3.0
 Group: op5/system-addons
 URL: http://www.op5.com/support
 Prefix: /opt/plugins
-%if 0%{?rhel} <= 6
-Requires: python34
-BuildRequires: python34
-%else
 Requires: python36
 BuildRequires: python36
-%endif
-BuildRequires: curl
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 BuildArch: noarch
