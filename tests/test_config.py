@@ -1,6 +1,6 @@
 def test_section_exists(resource):
-    options = resource(cli_overrides={
-        "--credentials": "tests/config/credentials",
+    options = resource(overrides={
+        "--credentials": "tests/input/credentials",
         "--profile": "default"
     }).get_config()
 
@@ -8,5 +8,5 @@ def test_section_exists(resource):
 
 
 def test_non_section(resource):
-    options = resource(cli_overrides={"--profile": "test"}).get_config()
+    options = resource(overrides={"--profile": "test"}).get_config()
     assert not all([opt for opt in options.values()])
