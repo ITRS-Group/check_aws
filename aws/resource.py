@@ -18,10 +18,12 @@ class CloudWatchResource(nagiosplugin.Resource):
         self.cfg = cfg
 
         now = datetime.utcnow()
+
         self.frame = TimeFrame(
             start=now - timedelta(seconds=cfg.period + cfg.lag),
             end=now - timedelta(seconds=cfg.delta),
         )
+
         self.payload = dict(
             period=self.cfg.period,
             start_time=self.frame.start,
@@ -33,23 +35,31 @@ class CloudWatchResource(nagiosplugin.Resource):
             unit=self.cfg.unit,
         )
 
-    def probe(self):
-        def get_config(keys):
-            return {k: config.get(self.cfg.profile, k) for k in keys}
-
+    def get_config(self, keys=None):
+        keys = keys or ["aws_access_key_id", "aws_secret_access_key"]
         config = Config(do_load=False)
         config.load_from_path(self.cfg.credentials_file)
-        connection = cloudwatch.connect_to_region(
+
+        return {k: config.get(self.cfg.profile, k) for k in keys}
+
+    @property
+    def connection(self):
+        return cloudwatch.connect_to_region(
             self.cfg.region,
-            **get_config(["aws_access_key_id", "aws_secret_access_key"])
+            **self.get_config()
         )
 
-        points = connection.get_metric_statistics(**self.payload)
+    def _request(self):
+        return self.connection.get_metric_statistics(**self.payload)
+
+    def probe(self):
+        points = self._request()
 
         if len(points) < 1:
             return []
 
         point = points[0]
+
         return [nagiosplugin.Metric(self.cfg.metric, point[self.cfg.statistic])]
 
     @property
