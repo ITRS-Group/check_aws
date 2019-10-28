@@ -3,7 +3,7 @@
 %define pkg_path aws
 
 Summary: EC2 CloudWatch Nagios Plugin
-Name: monitor-plugin-check_aws
+Name: check_aws
 Version: %{op5version}
 Release: %{op5release}%{?dist}
 Vendor: OP5 AB
