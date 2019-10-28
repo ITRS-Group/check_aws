@@ -6,7 +6,7 @@ authors = ["Robert Wikman <rwikman@op5.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = "^3.4"
+python = "^3.6"
 boto = "^2.49.0"
 nagiosplugin = "^1.2.4"
 
