@@ -107,7 +107,6 @@ opts = [
         {
             "dest": "verbosity",
             "action": "count",
-            "type": str,
             "default": Default.verbosity.value,
             "help": "Set verbosity (use up to 3 times)"
         }
