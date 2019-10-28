@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_section_exists(resource):
     options = resource(overrides={
         "--credentials": "tests/input/credentials",
@@ -14,3 +17,11 @@ def test_non_section(resource):
     }).get_config()
 
     assert not all([opt for opt in options.values()])
+
+
+def test_non_file(resource):
+    with pytest.raises(OSError):
+        resource(overrides={
+            "--profile": "test_non_section",
+            "--credentials": "tests/input/non_existent_file"
+        }).get_config()
