@@ -87,6 +87,7 @@ opts = [
         {
             "dest": "warning",
             "action": "store",
+            "type": str,
             "default": Default.warning.value,
             "help": "Warning if threshold is outside range (default: %(default)s)"
         }
@@ -96,6 +97,7 @@ opts = [
         {
             "dest": "critical",
             "action": "store",
+            "type": str,
             "default": Default.critical.value,
             "help": "Critical if threshold is outside range (default: %(default)s)"
         }
@@ -105,6 +107,7 @@ opts = [
         {
             "dest": "verbosity",
             "action": "count",
+            "type": str,
             "default": Default.verbosity.value,
             "help": "Set verbosity (use up to 3 times)"
         }
