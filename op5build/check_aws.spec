@@ -43,5 +43,5 @@ cp --archive %{pkg_path} %{buildroot}/%{plugin_root}/
 rm -rf %buildroot
 
 %changelog
-* Fri Oct 10 2019 Robert Wikman <rwikman@op5.com> - 0.1.0
+* Fri Oct 11 2019 Robert Wikman <rwikman@op5.com> - 0.1.0
 - Init
