@@ -15,24 +15,26 @@ Usage
 ---
 
 ```
-usage: check_cloudwatch.py [-h] -r
-                           {ap-south-1,us-east-2,us-east-1,us-west-1,us-west-2,ca-central-1,eu-central-1,cn-north-1,ap-southeast-1,eu-west-2,ap-southeast-2,ap-northeast-2,us-gov-west-1,sa-east-1,ap-northeast-1,eu-west-1}
-                           -m METRIC -n NAMESPACE [-d DIMENSIONS] [-p PROFILE]
-                           [-s {Average,Sum,SampleCount,Maximum,Minimum}]
-                           [-w WARNING] [-c CRITICAL] [-v] [-P PERIOD]
-                           [-D DELTA] [-l LAG]
+usage: check_aws.py [-h] -r
+                    {ap-southeast-2,us-east-1,ca-central-1,us-gov-west-1,eu-west-1,eu-west-2,us-west-2,eu-central-1,cn-north-1,us-west-1,ap-northeast-1,ap-southeast-1,sa-east-1,us-east-2,ap-northeast-2,ap-south-1}
+                    [-u UNIT] -m METRIC -n NAMESPACE [-d [DIMENSIONS]]
+                    [-p PROFILE]
+                    [-s {Average,Sum,SampleCount,Maximum,Minimum}]
+                    [-w WARNING] [-c CRITICAL] [-v] [-P [PERIOD]] [-D DELTA]
+                    [-l LAG] [-C [CREDENTIALS_FILE]]
 
 Plugin for monitoring CloudWatch-enabled AWS instances
 
 optional arguments:
   -h, --help            show this help message and exit
-  -r {ap-south-1,us-east-2,us-east-1,us-west-1,us-west-2,ca-central-1,eu-central-1,cn-north-1,ap-southeast-1,eu-west-2,ap-southeast-2,ap-northeast-2,us-gov-west-1,sa-east-1,ap-northeast-1,eu-west-1}, --region {ap-south-1,us-east-2,us-east-1,us-west-1,us-west-2,ca-central-1,eu-central-1,cn-north-1,ap-southeast-1,eu-west-2,ap-southeast-2,ap-northeast-2,us-gov-west-1,sa-east-1,ap-northeast-1,eu-west-1}
+  -r {ap-southeast-2,us-east-1,ca-central-1,us-gov-west-1,eu-west-1,eu-west-2,us-west-2,eu-central-1,cn-north-1,us-west-1,ap-northeast-1,ap-southeast-1,sa-east-1,us-east-2,ap-northeast-2,ap-south-1}, --region {ap-southeast-2,us-east-1,ca-central-1,us-gov-west-1,eu-west-1,eu-west-2,us-west-2,eu-central-1,cn-north-1,us-west-1,ap-northeast-1,ap-southeast-1,sa-east-1,us-east-2,ap-northeast-2,ap-south-1}
                         AWS region name
+  -u UNIT, --unit UNIT  Metric Unit
   -m METRIC, --metric METRIC
                         CloudWatch metric name
   -n NAMESPACE, --namespace NAMESPACE
                         CloudWatch metric namespace
-  -d DIMENSIONS, --dimensions DIMENSIONS
+  -d [DIMENSIONS], --dimensions [DIMENSIONS]
                         Dimensions of one or more metrics:
                         dimension=value[,dimension=value...]
   -p PROFILE, --profile PROFILE
@@ -45,7 +47,7 @@ optional arguments:
   -c CRITICAL, --critical CRITICAL
                         Critical if threshold is outside range (default: 0)
   -v, --verbosity       Set verbosity (use up to 3 times)
-  -P PERIOD, --period PERIOD
+  -P [PERIOD], --period [PERIOD]
                         Period in seconds over which the statistic is applied
                         (default: 60)
   -D DELTA, --delta DELTA
@@ -53,13 +55,15 @@ optional arguments:
   -l LAG, --lag LAG     Delay in seconds to add to starting time for gathering
                         metric.useful for ec2 basic monitoring which
                         aggregates over 5min periods (default: 0)
+  -C [CREDENTIALS_FILE], --credentials [CREDENTIALS_FILE]
+                        File containing AWS credentials
 ```
 
 
 Credentials and authentication
 ---
 
-This plugin *currently* only supports authentication using credentials stored in ~/.aws/credentials.
+Credentials file path can be passed using the --credentials option and defaults to ~/.aws/credentials.
 
 
 Usage examples
