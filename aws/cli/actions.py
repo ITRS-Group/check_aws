@@ -28,17 +28,11 @@ class DimensionsSerializer(Action):
             yield k, v
 
 
-class CredentialsFileResolver(Action):
-    """Credentials file resolver
-
-    Ensures a falsy credentials file argument is set to its field's default value.
-
-    This is mainly to provide compatibility with the various "metadata" packs in OP5 Monitor
-    without using wrapper hacks.
-    """
+class NagiosArgumentHandler(Action):
+    """Causes empty string arguments to resort to its dest's default value"""
 
     def __call__(self, parser, namespace, value, option_string=None):
         if not value:
-            value = Default.credentials_file.value
+            value = getattr(Default, self.dest).value
 
         setattr(namespace, self.dest, value)

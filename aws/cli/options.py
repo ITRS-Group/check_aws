@@ -2,7 +2,7 @@ from boto import ec2
 
 from aws.consts import STATISTICS, Default
 
-from .actions import DimensionsSerializer, CredentialsFileResolver
+from .actions import DimensionsSerializer, NagiosArgumentHandler
 
 opts = [
     (
@@ -147,7 +147,7 @@ opts = [
         ["-C", "--credentials"],
         {
             "dest": "credentials_file",
-            "action": CredentialsFileResolver,
+            "action": NagiosArgumentHandler,
             "type": str,
             "nargs": "?",
             "default": Default.credentials_file.value,
