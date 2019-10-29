@@ -2,7 +2,7 @@ from boto import ec2
 
 from aws.consts import STATISTICS, Default
 
-from .parsers import DimensionParser
+from .actions import DimensionsSerializer, CredentialsFileResolver
 
 opts = [
     (
@@ -54,7 +54,7 @@ opts = [
         ["-d", "--dimensions"],
         {
             "dest": "dimensions",
-            "action": DimensionParser,
+            "action": DimensionsSerializer,
             "type": str,
             "nargs": "?",
             "default": Default.dimensions.value,
@@ -147,7 +147,7 @@ opts = [
         ["-C", "--credentials"],
         {
             "dest": "credentials_file",
-            "action": "store",
+            "action": CredentialsFileResolver,
             "type": str,
             "nargs": "?",
             "default": Default.credentials_file.value,
