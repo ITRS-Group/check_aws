@@ -7,7 +7,7 @@ def test_custom_file(cli):
     assert cli({"-C": "tests/input/credentials"})
 
 
-def test_empty_custom(cli):
+def test_custom_falsy(cli):
     assert cli({"-C": ""}).credentials_file == Default.credentials_file.value
 
 
