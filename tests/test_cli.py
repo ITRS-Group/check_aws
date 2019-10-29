@@ -1,7 +1,5 @@
 import pytest
 
-from aws.cli import get_default_credentials_file
-
 
 def test_namespace_valid(cli):
     assert cli({"-n": "test"}).namespace == "test"
@@ -69,17 +67,3 @@ def test_dimensions_parse_fail(cli):
 
     with pytest.raises(ValueError):
         assert cli({"--dimensions": "test"})
-
-
-def test_custom_credentials_file(cli):
-    assert cli({"-C": "tests/input/credentials"})
-
-
-def test_custom_credentials_file_fail(cli):
-    with pytest.raises(OSError):
-        assert cli({"-C": "tests/input/foobar.txt"})
-
-
-def test_custom_credentials_default(cli):
-    assert cli({"-C": ""}).credentials_file == get_default_credentials_file()
-

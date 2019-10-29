@@ -1,5 +1,3 @@
-import os
-
 from collections import namedtuple
 from datetime import datetime, timedelta
 
@@ -35,7 +33,7 @@ class CloudWatchResource(nagiosplugin.Resource):
             unit=self.cfg.unit,
         )
 
-    def get_config(self, keys=None):
+    def get_credentials(self, keys=None):
         keys = keys or ["aws_access_key_id", "aws_secret_access_key"]
         config = Config(do_load=False)
         config.load_from_path(self.cfg.credentials_file)
@@ -46,7 +44,7 @@ class CloudWatchResource(nagiosplugin.Resource):
     def connection(self):
         return cloudwatch.connect_to_region(
             self.cfg.region,
-            **self.get_config()
+            **self.get_credentials()
         )
 
     def _request(self):

@@ -1,3 +1,5 @@
+from os import path
+
 from enum import Enum
 
 NAME = "AWS"
@@ -17,7 +19,7 @@ class Default(Enum):
     metric = None
     dimensions = None
     unit = None
-    credentials_file = None
+    credentials_file = path.join(path.expanduser("~"), ".aws", "credentials")
     profile = "default"
     statistic = "Average"
     period = 60
