@@ -74,7 +74,7 @@ Usage examples
 AWS/VPN availability
 
 ```
-$ python check_cloudwatch.py --metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4
+$ python check_aws.py --metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4
 ```
 
 **Free storage space**
