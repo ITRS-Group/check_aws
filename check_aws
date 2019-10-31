@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+tmp_lc_all=`locale -k LC_CTYPE | grep -qiE 'charmap="utf-?8"' && echo $LC_ALL || echo "en_US.UTF-8"`
+LC_ALL=$tmp_lc_all /opt/monitor/op5/check_aws/venv/bin/check_aws "$@"
