@@ -1,9 +1,7 @@
-check_aws: CloudWatch Nagios Plugin
+check_aws: AWS CloudWatch Nagios plugin
 ===
 
-Plugin for monitoring CloudWatch-enabled AWS.
-
-It makes use of [boto/boto](https://github.com/boto/boto) for interacting with AWS,
+This Nagios plugin makes use of [boto/boto](https://github.com/boto/boto) for interacting with AWS,
 and [flyingcircus/nagiosplugin](https://bitbucket.org/flyingcircus/nagiosplugin/src/default) to convert the results
 to a Nagios-interpretable format.
 
