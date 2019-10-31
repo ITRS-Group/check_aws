@@ -2,7 +2,7 @@ import argparse
 
 from .options import opts
 
-from aws.consts import UNITS
+from nagios_aws.consts import UNITS
 
 
 def parse_cmdline(args):

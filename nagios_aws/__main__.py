@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
 import sys
 
 from nagiosplugin import guarded, Check, ScalarContext
-from aws import parse_cmdline, CloudWatchResource, CloudWatchSummary
+from nagios_aws import parse_cmdline, CloudWatchResource, CloudWatchSummary
 
 
 def produce_target(cfg):

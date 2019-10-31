@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "check_aws"
+name = "nagios_aws"
 version = "0.1.0"
-description = "EC2 CloudWatch Nagios Plugin"
+description = "AWS Nagios plugin"
 authors = ["Robert Wikman <rwikman@op5.com>"]
 license = "GPL-3.0"
 

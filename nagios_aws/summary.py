@@ -1,6 +1,6 @@
 import nagiosplugin
 
-from aws.cli.actions import DimensionsSerializer
+from nagios_aws.cli.actions import DimensionsSerializer
 
 
 class CloudWatchSummary(nagiosplugin.Summary):

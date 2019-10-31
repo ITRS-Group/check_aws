@@ -1,4 +1,4 @@
-from aws.summary import CloudWatchSummary
+from nagios_aws.summary import CloudWatchSummary
 
 
 def test_probe_result():

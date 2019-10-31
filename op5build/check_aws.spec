@@ -1,10 +1,9 @@
-%define plugin_root /opt/plugins
-%define lib_root /opt/monitor/op5/check_aws
-%define pkg_path aws
+%define profile_source_path profiles/op5_monitor.py
+%define app_install_path /opt/monitor/op5/nagios_aws
+%define check_install_path /opt/plugins/check_aws.py
 %define user monitor
-%define executable_name check_aws
 
-Summary: CloudWatch Nagios Plugin
+Summary: AWS Nagios plugin
 Name: monitor-plugin-check_aws
 Version: %{op5version}
 Release: %{op5release}%{?dist}
@@ -20,7 +19,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}
 BuildArch: noarch
 
 %description
-Flexible Nagios plugin for monitoring CloudWatch-enabled AWS.
+Nagios plugin for monitoring CloudWatch-enabled AWS services
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -38,27 +37,27 @@ export LC_ALL=en_US.UTF-8
 .venv/bin/pip install poetry
 .venv/bin/python -m poetry build
 .venv/bin/pip download -r requirements.txt -d dist
-
 %{__tar} cvfz dist.tar.gz dist
+
 %{__rm} -rf %{buildroot}
-%{__mkdir} -p %{buildroot}%{lib_root}
-%{__install} -Dp -m0644 dist.tar.gz %{buildroot}%{lib_root}/dist.tar.gz
-%{__install} -Dp -m0755 check_aws %{buildroot}%{plugin_root}/%{executable_name}
+%{__mkdir} -p %{buildroot}%{app_install_path}
+%{__install} -Dp -m0644 dist.tar.gz %{buildroot}%{app_install_path}/dist.tar.gz
+%{__install} -Dp -m0755 %{profile_source_path} %{buildroot}%{check_install_path}
 
 %post
-cd %{lib_root}
-%{__rm} -rf dist venv
+cd %{app_install_path}
+%{__rm} -rf dist .venv
 %{__tar} xvfz dist.tar.gz
 /usr/bin/python3 -m venv .venv
-.venv/bin/pip install --upgrade -f dist --no-index dist/check_aws-*.whl
+.venv/bin/pip install --upgrade -f dist --no-index dist/nagios_aws-*.whl
 %{__chown} -R %{user} .
 
 %files
 %defattr(-, monitor, root)
-%attr(644, monitor, root) %{lib_root}/dist.tar.gz
-%attr(755, monitor, root) %{plugin_root}/%{executable_name}
-%exclude %{lib_root}/setup.pyc
-%exclude %{lib_root}/setup.pyo
+%attr(644, monitor, root) %{app_install_path}/dist.tar.gz
+%attr(755, monitor, root) %{check_install_path}
+%exclude %{app_install_path}/setup.pyc
+%exclude %{app_install_path}/setup.pyo
 %license LICENSE
 %doc README.md
 

@@ -1,6 +1,6 @@
 from argparse import Action
 
-from aws.consts import Default
+from nagios_aws.consts import Default
 
 
 class DimensionsSerializer(Action):
