@@ -31,7 +31,7 @@ python -m pip install pytest
 python -m pytest
 
 %install
-python3 -m pip install -r %{buildroot}/requirements.txt
+python3 -m pip install -r requirements.txt
 %{__install} -D -p %{exec_path} %{buildroot}/%{plugin_root}/%{exec_path}
 cp --archive %{pkg_path} %{buildroot}/%{plugin_root}/
 
