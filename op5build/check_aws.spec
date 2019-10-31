@@ -42,7 +42,7 @@ export LC_ALL=en_US.UTF-8
 %{__rm} -rf %{buildroot}
 %{__mkdir} -p %{buildroot}%{app_install_path}
 %{__install} -Dp -m0644 dist.tar.gz %{buildroot}%{app_install_path}/dist.tar.gz
-%{__install} -Dp -m0755 %{profile_source_path} %{buildroot}%{check_install_path}
+# %{__install} -Dp -m0755 %{profile_source_path} %{buildroot}%{check_install_path}
 
 %post
 cd %{app_install_path}
@@ -55,7 +55,7 @@ cd %{app_install_path}
 %files
 %defattr(-, monitor, root)
 %attr(644, monitor, root) %{app_install_path}/dist.tar.gz
-%attr(755, monitor, root) %{check_install_path}
+# %attr(755, monitor, root) %{check_install_path}
 %exclude %{app_install_path}/setup.pyc
 %exclude %{app_install_path}/setup.pyo
 %license LICENSE
