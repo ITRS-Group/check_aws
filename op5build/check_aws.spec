@@ -38,12 +38,12 @@ export LC_ALL=en_US.UTF-8
 .venv/bin/pip install poetry
 .venv/bin/python -m poetry build
 .venv/bin/pip download -r requirements.txt -d dist
-%{__tar} cvfz dist.tar.gz dist
 
+%{__tar} cvfz dist.tar.gz dist
 %{__rm} -rf %{buildroot}
 %{__mkdir} -p %{buildroot}%{lib_root}
 %{__install} -Dp -m0644 dist.tar.gz %{buildroot}%{lib_root}/dist.tar.gz
-# %{__install} -Dp -m0755 check_aws %{buildroot}%{plugin_root}/%{executable_name}
+%{__install} -Dp -m0755 check_aws %{buildroot}%{plugin_root}/%{executable_name}
 
 %post
 cd %{lib_root}
@@ -56,7 +56,7 @@ cd %{lib_root}
 %files
 %defattr(-, monitor, root)
 %attr(644, monitor, root) %{lib_root}/dist.tar.gz
-# %attr(755, monitor, root) %{plugin_root}/%{executable_name}
+%attr(755, monitor, root) %{plugin_root}/%{executable_name}
 %exclude %{lib_root}/setup.pyc
 %exclude %{lib_root}/setup.pyo
 %license LICENSE
