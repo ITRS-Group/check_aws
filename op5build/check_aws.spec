@@ -17,6 +17,7 @@ BuildRequires: python36
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 BuildArch: noarch
+AutoReq: no
 
 %description
 Nagios plugin for monitoring CloudWatch-enabled AWS services
