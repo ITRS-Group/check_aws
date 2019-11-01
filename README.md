@@ -1,4 +1,4 @@
-nagios_aws: AWS Nagios plugin
+nagios_aws: Nagios AWS plugin
 ===
 
 This plugin makes use of [boto/boto](https://github.com/boto/boto) for interacting with AWS CloudWatch,
