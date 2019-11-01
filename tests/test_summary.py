@@ -3,7 +3,6 @@ from nagios_aws.summary import CloudWatchSummary
 
 def test_probe_result():
     summary = CloudWatchSummary("n", "m")
-    # msg = getattr(summary, "_msg")
     msg = summary.get_message()
 
     assert summary.ok(None) == msg
