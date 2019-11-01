@@ -9,8 +9,8 @@ class CloudWatchSummary(nagiosplugin.Summary):
         self.metric = metric
         self.dimensions = dimensions
 
-    def get_message(self, result):
-        result_text = result[0].metric.value
+    def get_message(self, result=None):
+        result_text = result[0].metric.value if result else ""
 
         msg = "Metric {0}:{1} {2}".format(
             self.namespace,
