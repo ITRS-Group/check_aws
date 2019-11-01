@@ -1,6 +1,6 @@
 from boto import ec2
 
-from aws.consts import STATISTICS, Default
+from nagios_aws.consts import STATISTICS, Default
 
 from .actions import DimensionsSerializer, NagiosArgumentHandler
 

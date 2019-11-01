@@ -1,6 +1,6 @@
 import pytest
 
-from aws.consts import Default
+from nagios_aws.consts import Default
 
 
 def test_custom_file(cli):

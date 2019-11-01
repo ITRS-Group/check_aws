@@ -1,6 +1,6 @@
 import pytest
 
-from aws import parse_cmdline, CloudWatchResource
+from nagios_aws import parse_cmdline, CloudWatchResource
 
 
 @pytest.fixture
