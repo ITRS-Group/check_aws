@@ -13,7 +13,7 @@ Usage
 ---
 
 ```
-usage: check_aws.py [-h] -r
+usage: nagios_aws [-h] -r
                     {ap-southeast-2,us-east-1,ca-central-1,us-gov-west-1,eu-west-1,eu-west-2,us-west-2,eu-central-1,cn-north-1,us-west-1,ap-northeast-1,ap-southeast-1,sa-east-1,us-east-2,ap-northeast-2,ap-south-1}
                     [-u UNIT] -m METRIC -n NAMESPACE [-d [DIMENSIONS]]
                     [-p PROFILE]
@@ -63,6 +63,11 @@ Credentials and authentication
 
 Credentials file path can be passed using the --credentials option and defaults to ~/.aws/credentials.
 
+**Example**
+
+```
+$ python -m nagios_aws --credentials /path/to/credentials ...
+```
 
 Usage examples
 ---
@@ -98,4 +103,3 @@ EC2 instance CPU utilization.
 ```
 $ python -m nagios_aws --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
 ```
-
