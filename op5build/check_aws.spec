@@ -13,6 +13,7 @@ Group: op5/system-addons
 URL: http://www.op5.com/support
 Prefix: /opt/plugins
 Requires: python36
+Requires: op5-monitor-user
 BuildRequires: python36
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
@@ -68,5 +69,7 @@ cd %{app_install_path}
 rm -rf %buildroot
 
 %changelog
+* Thu May 28 2020 Jacob Hansen <jhansen@op5.com> - 0.2.0
+- Require op5-monitor-user
 * Fri Oct 11 2019 Robert Wikman <rwikman@op5.com> - 0.1.0
 - Init
