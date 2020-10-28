@@ -27,18 +27,18 @@ Nagios plugin for monitoring CloudWatch-enabled AWS services
 %setup -q -n %{name}-%{version}
 
 %build
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pip install pytest
 python -m pytest
 
 %install
 export LC_ALL=en_US.UTF-8
-/usr/bin/python3 -m venv .venv
-.venv/bin/pip install poetry
-.venv/bin/python -m poetry build
-.venv/bin/pip download -r requirements.txt -d dist
+/usr/bin/python3 -m venv venv
+venv/bin/pip install poetry
+venv/bin/python -m poetry build
+venv/bin/pip download -r requirements.txt -d dist
 %{__tar} cvfz dist.tar.gz dist
 
 %{__rm} -rf %{buildroot}
@@ -48,11 +48,14 @@ export LC_ALL=en_US.UTF-8
 
 %post
 cd %{app_install_path}
-%{__rm} -rf dist .venv
+%{__rm} -rf dist venv
 %{__tar} xvfz dist.tar.gz
-/usr/bin/python3 -m venv .venv
-.venv/bin/pip install --upgrade -f dist --no-index dist/nagios_aws-*.whl
+/usr/bin/python3 -m venv venv
+venv/bin/pip install --upgrade -f dist --no-index dist/nagios_aws-*.whl
 %{__chown} -R %{user} .
+
+# Remove build artifacts
+%{__rm} --recursive --force %{app_install_path}/dist %{app_install_path}/dist.tar.gz
 
 %files
 %defattr(-, monitor, root)
@@ -69,6 +72,8 @@ cd %{app_install_path}
 rm -rf %buildroot
 
 %changelog
+* Wed Oct 28 2020 Erik Sjöström <esjostrom@itrsgroup.com>
+- Remove build artifacts and make the venv visible to the user
 * Thu May 28 2020 Jacob Hansen <jhansen@op5.com> - 0.2.0
 - Require op5-monitor-user
 * Fri Oct 11 2019 Robert Wikman <rwikman@op5.com> - 0.1.0
