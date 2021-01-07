@@ -31,10 +31,11 @@ class CloudWatchResource(nagiosplugin.Resource):
             Unit=self.cfg.unit,
         )
 
+        self._session = boto3.Session(region_name=self.cfg.region)
+
     @property
     def connection(self):
-        session = boto3.Session(region_name=self.cfg.region)
-        return session.client("cloudwatch")
+        return self._session.client("cloudwatch")
 
     def _send(self, *args, **kwargs):
         return self.connection.get_metric_statistics(*args, **self.payload, **kwargs)
@@ -46,7 +47,7 @@ class CloudWatchResource(nagiosplugin.Resource):
         if len(response["Datapoints"]) < 1:
             return []
 
-        # Make stat key case insensitive
+        # Make statistic input case insensitive
         stat_key = self.cfg.statistic.capitalize()
 
         for point in response["Datapoints"]:
