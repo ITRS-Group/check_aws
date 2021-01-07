@@ -50,12 +50,14 @@ def test_region_invalid(cli):
 
 
 def test_dimensions_parsed(cli):
-    assert cli({"-d": "test=test"}).dimensions == dict(test="test")
-    assert cli({"--dimensions": "foo=bar"}).dimensions == dict(foo="bar")
+    assert cli({"-d": "foo=bar"}).dimensions == [dict(Name="foo", Value="bar")]
+    assert cli({"--dimensions": "foo=bar"}).dimensions == [
+        dict(Name="foo", Value="bar")
+    ]
 
 
 def test_dimensions_empty(cli):
-    assert cli({"-d": ""}).dimensions is None
+    assert cli({"-d": ""}).dimensions == tuple()
 
 
 def test_dimensions_parse_fail(cli):
