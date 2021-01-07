@@ -2,9 +2,7 @@ from collections import namedtuple
 from datetime import datetime, timedelta
 
 import nagiosplugin
-
-from boto.ec2 import cloudwatch
-from boto.pyami.config import Config
+import boto3
 
 from .consts import NAME
 
@@ -23,42 +21,37 @@ class CloudWatchResource(nagiosplugin.Resource):
         )
 
         self.payload = dict(
-            period=self.cfg.period,
-            start_time=self.frame.start,
-            end_time=self.frame.end,
-            metric_name=self.cfg.metric,
-            namespace=self.cfg.namespace,
-            statistics=self.cfg.statistic,
-            dimensions=self.cfg.dimensions,
-            unit=self.cfg.unit,
+            Period=self.cfg.period,
+            StartTime=self.frame.start,
+            EndTime=self.frame.end,
+            MetricName=self.cfg.metric,
+            Namespace=self.cfg.namespace,
+            Statistics=(self.cfg.statistic,),
+            Dimensions=self.cfg.dimensions,
+            Unit=self.cfg.unit,
         )
-
-    def get_credentials(self, keys=None):
-        keys = keys or ["aws_access_key_id", "aws_secret_access_key"]
-        config = Config(do_load=False)
-        config.load_from_path(self.cfg.credentials_file)
-
-        return {k: config.get(self.cfg.profile, k) for k in keys}
 
     @property
     def connection(self):
-        return cloudwatch.connect_to_region(
-            self.cfg.region,
-            **self.get_credentials()
-        )
+        session = boto3.Session(region_name=self.cfg.region)
+        return session.client("cloudwatch")
 
-    def _request(self):
-        return self.connection.get_metric_statistics(**self.payload)
+    def _send(self, *args, **kwargs):
+        return self.connection.get_metric_statistics(*args, **self.payload, **kwargs)
 
     def probe(self):
-        points = self._request()
+        """Generator for yielding metrics from Datapoints"""
 
-        if len(points) < 1:
+        response = self._send()
+        if len(response["Datapoints"]) < 1:
             return []
 
-        point = points[0]
+        # Make stat key case insensitive
+        stat_key = self.cfg.statistic.capitalize()
 
-        return [nagiosplugin.Metric(self.cfg.metric, point[self.cfg.statistic])]
+        for point in response["Datapoints"]:
+            stat_val = point.get(stat_key)
+            yield nagiosplugin.Metric(self.cfg.metric, stat_val)
 
     @property
     def name(self):
