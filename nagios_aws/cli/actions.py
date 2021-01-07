@@ -1,3 +1,6 @@
+import warnings
+
+from os import environ
 from argparse import Action
 
 from nagios_aws.consts import Default
@@ -28,11 +31,16 @@ class DimensionsSerializer(Action):
             yield dict(Name=k, Value=v)
 
 
-class NagiosArgumentHandler(Action):
-    """Causes empty string arguments to resort to its dest's default value"""
-
+class CredentialsFileHandler(Action):
     def __call__(self, parser, namespace, value, option_string=None):
         if not value:
             value = getattr(Default, self.dest).value
 
-        setattr(namespace, self.dest, value)
+        if option_string == "--credentials":
+            warnings.warn(
+                "The credentials option is DEPRECATED. "
+                "Please use credentials_file instead."
+            )
+
+        # Boto3 only supports setting a custom credentials file via the env
+        environ["AWS_SHARED_CREDENTIALS_FILE"] = value

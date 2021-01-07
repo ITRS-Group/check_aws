@@ -1,7 +1,7 @@
 from boto3 import Session
 from nagios_aws.consts import STATISTICS, Default
 
-from .actions import DimensionsSerializer, NagiosArgumentHandler
+from .actions import DimensionsSerializer, CredentialsFileHandler
 
 opts = [
     (
@@ -146,7 +146,18 @@ opts = [
         ["-C", "--credentials"],
         {
             "dest": "credentials_file",
-            "action": NagiosArgumentHandler,
+            "action": CredentialsFileHandler,
+            "type": str,
+            "nargs": "?",
+            "default": Default.credentials_file.value,
+            "help": "File containing AWS credentials (DEPRECATED)",
+        },
+    ),
+    (
+        ["-f", "--credentials_file"],
+        {
+            "dest": "credentials_file",
+            "action": CredentialsFileHandler,
             "type": str,
             "nargs": "?",
             "default": Default.credentials_file.value,
