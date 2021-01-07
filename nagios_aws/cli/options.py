@@ -23,8 +23,8 @@ opts = [
             "action": "store",
             "type": str,
             "default": Default.unit.value,
-            "required": False,
-            "help": "Metric Unit",
+            "required": True,
+            "help": "Response unit",
         },
     ),
     (
@@ -35,7 +35,7 @@ opts = [
             "type": str,
             "default": Default.metric.value,
             "required": True,
-            "help": "CloudWatch metric name",
+            "help": "Metric name",
         },
     ),
     (
@@ -46,7 +46,7 @@ opts = [
             "type": str,
             "default": Default.namespace.value,
             "required": True,
-            "help": "CloudWatch metric namespace",
+            "help": "Metric namespace",
         },
     ),
     (
@@ -107,7 +107,7 @@ opts = [
             "dest": "verbosity",
             "action": "count",
             "default": Default.verbosity.value,
-            "help": "Set verbosity (use up to 3 times)",
+            "help": "Verbosity (use up to 3 times)",
         },
     ),
     (
@@ -139,7 +139,7 @@ opts = [
             "type": int,
             "default": Default.lag.value,
             "help": "Delay in seconds to add to starting time for gathering metric."
-            "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
+                    "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
         },
     ),
     (
