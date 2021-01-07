@@ -1,16 +1,27 @@
-nagios_aws: Nagios AWS plugin
-===
+# nagios_aws: AWS monitoring plugin
 
-This plugin makes use of [boto/boto](https://github.com/boto/boto) for interacting with AWS CloudWatch,
-and [flyingcircus/nagiosplugin](https://bitbucket.org/flyingcircus/nagiosplugin/src/default) to convert the results
-to a Nagios-interpretable format.
+Nagios/Naemon-compatible plugin for monitoring CloudWatch-enabled AWS instaces.
 
-Visit the [AWS Console](https://console.aws.amazon.com/cloudwatch) or check out the
-[AWSEC2 UserGuide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html) 
-for a list of metrics that can be used with this plugin.
+To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
+check out
+the [AWSEC2 UserGuide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html) to see
+how things maps to **nagios_aws** input.
 
-Usage
----
+### Table of Contents
+
+- [CLI Usage](#cli-usage)
+- [Credentials and Authentication](#credentials-and-authentication)
+- [Examples](#examples)
+    * [VPN Availability](#vpn-availability)
+    * [Free Space](#free-space)
+    * [Credit Usage](#credit-usage)
+    * [CPU Utilization](#cpu-utilization)
+- [Troubleshooting](#troubleshooting)
+- [Other](#other)
+    * [AWS CLI](#aws-cli)
+- [Credits](#credits)
+
+## CLI Usage
 
 ```
 usage: nagios_aws [-h] -r
@@ -57,49 +68,66 @@ optional arguments:
                         File containing AWS credentials
 ```
 
+## Credentials and Authentication
 
-Credentials and authentication
----
+The program looks for credentials in *~/.aws/credentials* by default. This can be overridden by passing a custom path as
+argument to the `--credentials` CLI option.
 
-Credentials file path can be passed using the --credentials option and defaults to ~/.aws/credentials.
+## Examples
 
-**Example**
+These examples can be invoked with `$ python -m nagios_aws <example>`.
 
-```
-$ python -m nagios_aws --credentials /path/to/credentials ...
-```
-
-Usage examples
----
-
-**AWS/VPN tunnel**
-
-AWS/VPN availability
+#### VPN availability
 
 ```
-$ python -m nagios_aws --metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4
+--metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4 --unit Count
 ```
 
-**Free storage space**
-
-Free storage space in AWS RDS.
+#### Free Space
 
 ```
-$ python -m nagios_aws --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000
+--metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000 --unit Bytes
 ```
 
-**Credit usage**
-
-EC2 instance credit usage.
+#### Credit Usage
 
 ```
-$ python -m nagios_aws --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
+--metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229 --unit Count
 ```
 
-**CPU utilization**
-
-EC2 instance CPU utilization.
+#### CPU utilization
 
 ```
-$ python -m nagios_aws --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
+--metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800 --unit Count
 ```
+
+## Troubleshooting
+
+To have the program print out stack traces and other useful information when troubleshooting, simply pass the `-v`
+argument to the CLI. The argument can be stacked up to 3 times, with each stack adding an extra level of detail.
+
+## Other
+
+#### AWS CLI
+
+The AWS CLI--which expects a *Credentials File* for authentication, just like nagios_aws--can be used instead of the AWS
+Web Console to get information about Instances and other data commonly used as plugin input.
+
+##### Install
+
+```
+$ pip install awscli
+```
+
+##### List instances
+
+```
+$ aws ec2 describe-instances --region eu-west-1
+```
+
+## Credits
+
+The plugin was created by [ITRS Group: For the always-on enterprise](https://github.com/ITRS-Group). It makes use
+of [boto/boto3](https://github.com/boto/boto3) for interacting with AWS CloudWatch,
+and [mpounsett/nagiosplugin](https://github.com/mpounsett/nagiosplugin) for marshalling with Nagios.
+
