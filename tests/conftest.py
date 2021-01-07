@@ -12,7 +12,7 @@ def cli():
         opts_map = {
             "--namespace": "AWS/VPN",
             "--region": "eu-west-1",
-            "--metric": "TunnelState"
+            "--metric": "TunnelState",
         }
 
         # Override defaults

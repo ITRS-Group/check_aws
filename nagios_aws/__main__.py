@@ -8,10 +8,8 @@ def produce_target(cfg):
     return (
         CloudWatchResource(cfg),
         CloudWatchSummary(
-            namespace=cfg.namespace,
-            metric=cfg.metric,
-            dimensions=cfg.dimensions
-        )
+            namespace=cfg.namespace, metric=cfg.metric, dimensions=cfg.dimensions
+        ),
     )
 
 
