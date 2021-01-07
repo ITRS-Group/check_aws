@@ -18,7 +18,7 @@ class DimensionsSerializer(Action):
 
     @staticmethod
     def dump(data):
-        return " ({})".format(", ".join("{0}={1}".format(*d) for d in data.items()))
+        return " ({})".format(", ".join("{Name}={Value}".format(**d) for d in data))
 
     @staticmethod
     def load(value):
