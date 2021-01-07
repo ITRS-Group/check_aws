@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "nagios_aws"
-version = "0.1.0"
+version = "0.3.0"
 description = "AWS Nagios plugin"
 authors = ["Robert Wikman <rwikman@op5.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-boto = "^2.49.0"
+boto3 = "^1.16.48"
 nagiosplugin = "^1.2.4"
 
 [tool.poetry.dev-dependencies]
@@ -16,5 +16,5 @@ pytest-cov = "^2.7.1"
 codecov = "^2.0.15"
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
