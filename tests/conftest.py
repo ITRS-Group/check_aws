@@ -13,6 +13,7 @@ def cli():
             "--namespace": "AWS/VPN",
             "--region": "eu-west-1",
             "--metric": "TunnelState",
+            "--unit": "Bytes",
         }
 
         # Override defaults
