@@ -10,7 +10,7 @@ def test_probe_result():
 
 
 def test_dimensional_probe_result():
-    summary = CloudWatchSummary("n", "m", dimensions={"foo": "bar"})
+    summary = CloudWatchSummary("n", "m", dimensions=[dict(Name="foo", Value="bar")])
 
     assert "foo=bar" in summary.ok(None)
     assert "foo=bar" in summary.problem(None)
