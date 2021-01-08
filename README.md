@@ -1,6 +1,6 @@
 # nagios_aws: AWS monitoring plugin
 
-Nagios/Naemon-compatible plugin for monitoring CloudWatch-enabled AWS instaces.
+Nagios/Naemon-compatible plugin for monitoring CloudWatch-enabled AWS instances.
 
 To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
 check out
@@ -130,4 +130,3 @@ $ aws ec2 describe-instances --region eu-west-1
 The plugin was created by [ITRS Group: For the always-on enterprise](https://github.com/ITRS-Group). It makes use
 of [boto/boto3](https://github.com/boto/boto3) for interacting with AWS CloudWatch,
 and [mpounsett/nagiosplugin](https://github.com/mpounsett/nagiosplugin) for marshalling with Nagios.
-
