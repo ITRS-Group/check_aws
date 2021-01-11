@@ -23,7 +23,7 @@ opts = [
             "action": "store",
             "type": str,
             "default": Default.unit.value,
-            "required": True,
+            "required": False,
             "help": "Response unit",
         },
     ),

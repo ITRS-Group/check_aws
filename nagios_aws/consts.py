@@ -38,7 +38,7 @@ class Default(Enum):
     namespace = None
     metric = None
     dimensions = ()
-    unit = None
+    unit = "Count"
     credentials_file = path.join(path.expanduser("~"), ".aws", "credentials")
     profile = "default"
     statistic = "Average"
