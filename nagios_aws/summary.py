@@ -11,8 +11,7 @@ class CloudWatchSummary(nagiosplugin.Summary):
 
     def get_message(self, result=None):
         result_text = result[0].metric.value if result else ""
-
-        msg = "Metric {0}:{1} {2}".format(self.namespace, self.metric, result_text)
+        msg = f"Metric {self.namespace}:{self.metric} {result_text}"
 
         if self.dimensions:
             msg += DimensionsSerializer.dump(self.dimensions)
