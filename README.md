@@ -1,5 +1,9 @@
 # nagios_aws: AWS monitoring plugin
 
+[![image](https://badgen.net/travis/ITRS-Group/nagios_aws)](https://travis-ci.org/ITRS-Group/nagios_aws)
+[![image](https://badgen.net/lgtm/grade/g/ITRS-Group/nagios_aws)](https://lgtm.com/projects/g/ITRS-Group/nagios_aws/context:python)
+[![image](https://badgen.net/badge/license/GPLv3/blue)](https://lgtm.com/projects/g/ITRS-Group/nagios_aws/context:python)
+
 Nagios/Naemon-compatible plugin for monitoring CloudWatch-enabled AWS instances.
 
 To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
@@ -104,7 +108,7 @@ These examples can be invoked with `$ python -m nagios_aws <example>`.
 ## Troubleshooting
 
 To have the program print out stack traces and other useful information when troubleshooting, simply pass the `-v`
-argument to the CLI. The argument can be stacked up to 3 times, with each stack adding an extra level of detail.
+argument to the CLI. The argument can be stacked up to 3 times for extra verbosity.
 
 ## Other
 
