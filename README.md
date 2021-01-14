@@ -2,7 +2,7 @@
 
 [![image](https://badgen.net/travis/ITRS-Group/nagios_aws)](https://travis-ci.org/ITRS-Group/nagios_aws)
 [![image](https://badgen.net/lgtm/grade/g/ITRS-Group/nagios_aws)](https://lgtm.com/projects/g/ITRS-Group/nagios_aws/context:python)
-[![image](https://badgen.net/badge/license/GPLv3/blue)](https://lgtm.com/projects/g/ITRS-Group/nagios_aws/context:python)
+[![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/nagios_aws/master/LICENSE)
 
 Nagios/Naemon-compatible plugin for monitoring CloudWatch-enabled AWS instances.
 
