@@ -1,38 +1,54 @@
+from argparse import Namespace
+
 import pytest
 
-from nagios_aws import parse_cmdline, CloudWatchResource
+from nagios_aws import parse_cmdline, CloudWatchResource, consts
+from nagios_aws.target import Target
+
+
+class MockResource(CloudWatchResource):
+    def __init__(self, cfg, response=None):
+        self.__response = response or {}
+        super(MockResource, self).__init__(cfg)
+
+    def _send(self, *args, **kwargs):
+        return self.__response
+
+
+def make_namespace(payload):
+    """Creates new namespace using default config merged with given payload"""
+
+    cfg = consts.InputDefault().__dict__
+    cfg.update(payload or {})
+    return Namespace(**cfg)
 
 
 @pytest.fixture
 def cli():
-    def _loaded_cli(opts_override=None):
-        """Enables easy testing of the EC2CW CLI"""
+    def go(cli_args):
+        options = []
 
-        # Default opts dictionary, for convenience
-        opts_map = {
-            "--namespace": "AWS/VPN",
-            "--region": "eu-west-1",
-            "--metric": "TunnelState",
-            "--unit": "Bytes",
-        }
+        for k, v in cli_args.items():
+            options.extend([k, v])
 
-        # Override defaults
-        opts_map.update(opts_override or {})
-        opts_lst = []
+        return parse_cmdline(options)
 
-        # Argparse expects a list as input: convert
-        for k, v in opts_map.items():
-            opts_lst.extend([k, v])
-
-        return parse_cmdline(opts_lst)
-
-    return _loaded_cli
+    yield go
 
 
 @pytest.fixture
-def resource(cli):
-    def _loaded_resource(overrides=None):
-        cfg = cli(opts_override=overrides)
-        return CloudWatchResource(cfg)
+def resource():
+    def go(payload=None, response=None):
+        return MockResource(make_namespace(payload), response)
 
-    return _loaded_resource
+    yield go
+
+
+@pytest.fixture
+def target(resource):
+    def go(payload=None, response=None):
+        return Target(
+            make_namespace(payload), resource_cls=MockResource, response=response
+        )
+
+    yield go

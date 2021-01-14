@@ -1,4 +1,7 @@
-def test_frame(resource):
+from botocore.session import Session
+
+
+def test_resource_frame(resource):
     res = resource()
 
     assert res.payload.get("StartTime") == res.frame.start
