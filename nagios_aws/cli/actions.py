@@ -40,6 +40,7 @@ class CredentialsFileParser(Action):
             warnings.warn(
                 "The --credentials option is DEPRECATED. "
                 "Please use --credentials_file instead.",
+                DeprecationWarning
             )
 
         if not path.exists(value):
