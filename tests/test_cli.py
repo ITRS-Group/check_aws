@@ -17,9 +17,14 @@ def test_custom_file(cli):
 
 def test_custom_falsy(cli):
     assert (
-        cli({**CLI_DEFAULTS, "-C": ""}).credentials_file
-        == InputDefault.credentials_file
+            cli({**CLI_DEFAULTS, "-C": ""}).credentials_file
+            == InputDefault.credentials_file
     )
+
+
+def test_invalid_unit(cli):
+    with pytest.raises(ValueError):
+        assert cli({**CLI_DEFAULTS, "--unit": "Test"})
 
 
 def test_default(cli):
@@ -30,13 +35,16 @@ def test_non_file(cli):
     with pytest.raises(NoCredentialsError):
         cli({**CLI_DEFAULTS, "--credentials_file": "/no/such/file"})
 
+    with pytest.raises(NoCredentialsError):
+        cli({**CLI_DEFAULTS, "--credentials": None})
+
 
 def test_namespace_valid(cli):
     assert cli({**CLI_DEFAULTS, "-n": "test"}).namespace == "test"
     assert cli({**CLI_DEFAULTS, "-n": "test123"}).namespace == "test123"
     assert cli({**CLI_DEFAULTS, "--namespace": "TEST"}).namespace == "TEST"
     assert (
-        cli({**CLI_DEFAULTS, "--namespace": "TEST//ÅÄÖ__"}).namespace == "TEST//ÅÄÖ__"
+            cli({**CLI_DEFAULTS, "--namespace": "TEST//ÅÄÖ__"}).namespace == "TEST//ÅÄÖ__"
     )
 
 

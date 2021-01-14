@@ -2,7 +2,8 @@ import pytest
 
 from datetime import datetime
 
-from nagiosplugin import Metric
+from nagiosplugin import Metric, ScalarContext
+from nagios_aws import CloudWatchResource, CloudWatchSummary
 from nagios_aws.exceptions import UnexpectedResponse
 
 
@@ -111,3 +112,16 @@ def test_probe_no_datapoints(target):
     t = target(dict(metric="Test"), response)
 
     assert list(t.resource.probe()) == []
+
+
+def test_probe_yield_target(target):
+    response = {
+        "Label": "Test",
+    }
+
+    t = target(dict(metric="Test"), response)
+    args = list(t)
+
+    assert isinstance(args[0], CloudWatchResource)
+    assert isinstance(args[1], CloudWatchSummary)
+    assert isinstance(args[2], ScalarContext)
