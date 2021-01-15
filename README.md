@@ -68,14 +68,14 @@ optional arguments:
   -l LAG, --lag LAG     Delay in seconds to add to starting time for gathering
                         metric.useful for ec2 basic monitoring which
                         aggregates over 5min periods (default: 0)
-  -C [CREDENTIALS_FILE], --credentials [CREDENTIALS_FILE]
+  -f [CREDENTIALS_FILE], --credentials_file [CREDENTIALS_FILE]
                         File containing AWS credentials
 ```
 
 ## Credentials and Authentication
 
 The program looks for credentials in *~/.aws/credentials* by default. This can be overridden by passing a custom path as
-argument to the `--credentials` CLI option.
+argument to `--credentials_file`.
 
 ## Examples
 
