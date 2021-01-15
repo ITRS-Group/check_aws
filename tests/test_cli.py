@@ -15,13 +15,6 @@ def test_custom_file(cli):
     assert cli({**CLI_DEFAULTS, "-C": "tests/input/credentials"})
 
 
-def test_custom_falsy(cli):
-    assert (
-            cli({**CLI_DEFAULTS, "-C": ""}).credentials_file
-            == InputDefault.credentials_file
-    )
-
-
 def test_invalid_unit(cli):
     with pytest.raises(ValueError):
         assert cli({**CLI_DEFAULTS, "--unit": "Test"})
