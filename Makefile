@@ -29,7 +29,7 @@ test:
 	poetry run python -m pytest
 
 export:
-    poetry export --dev -f requirements.txt > requirements.txt
+	poetry export --dev -f requirements.txt > requirements.txt
 
 clean:
 	rm -rf dist .mypy_cache .pytest_cache

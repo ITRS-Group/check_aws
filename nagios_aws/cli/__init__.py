@@ -1,8 +1,8 @@
 import argparse
 
-from .options import opts
-
 from nagios_aws.consts import UNITS
+
+from .options import opts
 
 
 def parse_cmdline(args):
