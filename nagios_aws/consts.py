@@ -34,14 +34,14 @@ UNITS = [
 
 @dataclass
 class InputDefault:
-    namespace: str = None
-    metric: str = None
-    dimensions: tuple = ()
-    unit: str = None
-    region: str = None
-    credentials_file: str = None
+    namespace: str = ""
+    metric: str = ""
+    unit: str = ""
+    region: str = ""
+    credentials_file: str = ""
     profile: str = "default"
     statistic: str = "Average"
+    dimensions: tuple = ()
     period: int = 60
     lag: int = 0
     warning: int = 0

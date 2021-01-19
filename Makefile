@@ -32,12 +32,12 @@ export:
 	poetry export --dev -f requirements.txt > requirements.txt
 
 clean:
-	rm -rf dist .mypy_cache .pytest_cache
+	rm -rf dist .mypy_cache .pytest_cache .coverage
 	find nagios_aws -type d -name __pycache__ -exec rm -rv {} +
 	find nagios_aws -type f -name "*.py[co]" -delete
 
 lint:
-	poetry run mypy nagios_aws --disallow-untyped-defs
+	poetry run mypy nagios_aws
 	poetry run autoflake --recursive nagios_aws tests
 	poetry run black nagios_aws tests --check
 
