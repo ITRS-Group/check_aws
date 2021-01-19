@@ -1,6 +1,4 @@
-from os import path
-
-from enum import Enum
+from dataclasses import dataclass
 
 NAME = "AWS"
 STATISTICS = ["Average", "Sum", "SampleCount", "Maximum", "Minimum"]
@@ -34,17 +32,19 @@ UNITS = [
 ]
 
 
-class Default(Enum):
-    namespace = None
-    metric = None
-    dimensions = ()
-    unit = "Count"
-    credentials_file = path.join(path.expanduser("~"), ".aws", "credentials")
-    profile = "default"
-    statistic = "Average"
-    period = 60
-    lag = 0
-    warning = 0
-    critical = 0
-    verbosity = 0
-    delta = 0
+@dataclass
+class InputDefault:
+    namespace: str = ""
+    metric: str = ""
+    unit: str = ""
+    region: str = ""
+    credentials_file: str = ""
+    profile: str = "default"
+    statistic: str = "Average"
+    dimensions: tuple = ()
+    period: int = 60
+    lag: int = 0
+    warning: int = 0
+    critical: int = 0
+    verbosity: int = 0
+    delta: int = 0

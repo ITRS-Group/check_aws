@@ -9,11 +9,16 @@ license = "GPL-3.0"
 python = "^3.6"
 boto3 = "^1.16.48"
 nagiosplugin = "^1.2.4"
+dataclasses = { version = "^0.7", python = ">=3.6 <3.7" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.4.0"
 pytest-cov = "^2.7.1"
 codecov = "^2.0.15"
+mypy = "^0.770"
+autoflake = "^1.3"
+black = { version = "^20.8b1", allow-prereleases = true }
+isort = "^5.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

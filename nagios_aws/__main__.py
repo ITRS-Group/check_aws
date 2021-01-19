@@ -1,26 +1,16 @@
 import sys
 
-from nagiosplugin import guarded, Check, ScalarContext
-from nagios_aws import parse_cmdline, CloudWatchResource, CloudWatchSummary
+from nagiosplugin import Check, guarded
 
+from nagios_aws import parse_cmdline
 
-def produce_target(cfg):
-    return (
-        CloudWatchResource(cfg),
-        CloudWatchSummary(
-            namespace=cfg.namespace, metric=cfg.metric, dimensions=cfg.dimensions
-        ),
-    )
+from .target import Target
 
 
 @guarded(verbose=False)
 def main():
     args = parse_cmdline(sys.argv[1:])
-
-    Check(
-        *produce_target(args),
-        ScalarContext(args.metric, args.warning, args.critical),
-    ).main(verbose=args.verbosity > 0)
+    Check(*Target(args)).main(verbose=args.verbosity > 0)
 
 
 if __name__ == "__main__":

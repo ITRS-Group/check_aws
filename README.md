@@ -1,5 +1,10 @@
 # nagios_aws: AWS monitoring plugin
 
+[![image](https://badgen.net/travis/ITRS-Group/nagios_aws)](https://travis-ci.org/ITRS-Group/nagios_aws)
+[![image](https://badgen.net/lgtm/grade/g/ITRS-Group/nagios_aws)](https://lgtm.com/projects/g/ITRS-Group/nagios_aws)
+[![image](https://badgen.net/codecov/c/github/ITRS-Group/nagios_aws)](https://codecov.io/gh/ITRS-Group/nagios_aws)
+[![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/nagios_aws/master/LICENSE)
+
 Nagios/Naemon-compatible plugin for monitoring CloudWatch-enabled AWS instances.
 
 To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
@@ -64,14 +69,14 @@ optional arguments:
   -l LAG, --lag LAG     Delay in seconds to add to starting time for gathering
                         metric.useful for ec2 basic monitoring which
                         aggregates over 5min periods (default: 0)
-  -C [CREDENTIALS_FILE], --credentials [CREDENTIALS_FILE]
+  -f [CREDENTIALS_FILE], --credentials_file [CREDENTIALS_FILE]
                         File containing AWS credentials
 ```
 
 ## Credentials and Authentication
 
 The program looks for credentials in *~/.aws/credentials* by default. This can be overridden by passing a custom path as
-argument to the `--credentials` CLI option.
+argument to `--credentials_file`.
 
 ## Examples
 
@@ -104,7 +109,7 @@ These examples can be invoked with `$ python -m nagios_aws <example>`.
 ## Troubleshooting
 
 To have the program print out stack traces and other useful information when troubleshooting, simply pass the `-v`
-argument to the CLI. The argument can be stacked up to 3 times, with each stack adding an extra level of detail.
+argument to the CLI. The argument can be stacked up to 3 times for extra verbosity.
 
 ## Other
 
