@@ -24,7 +24,7 @@ opts = [
             "action": "store",
             "type": str,
             "default": InputDefault.unit,
-            "required": True,
+            "required": False,
             "help": "Response unit",
         },
     ),
@@ -140,7 +140,7 @@ opts = [
             "type": int,
             "default": InputDefault.lag,
             "help": "Delay in seconds to add to starting time for gathering metric."
-            "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
+                    "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
         },
     ),
     (
