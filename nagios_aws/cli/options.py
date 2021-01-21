@@ -24,7 +24,7 @@ opts = [
             "action": "store",
             "type": str,
             "default": InputDefault.unit,
-            "required": True,
+            "required": False,
             "help": "Response unit",
         },
     ),

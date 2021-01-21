@@ -36,7 +36,7 @@ UNITS = [
 class InputDefault:
     namespace: str = ""
     metric: str = ""
-    unit: str = ""
+    unit: str = "Count"
     region: str = ""
     credentials_file: str = ""
     profile: str = "default"
