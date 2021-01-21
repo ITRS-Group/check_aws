@@ -4,7 +4,7 @@
 %define user monitor
 
 Summary: AWS Nagios plugin
-Name: monitor-plugin-nagios_aws
+Name: monitor-plugin-check_aws
 Version: %{op5version}
 Release: %{op5release}%{?dist}
 Vendor: OP5 AB
@@ -12,7 +12,6 @@ License: GPL-3.0-or-later
 Group: op5/system-addons
 URL: http://www.op5.com/support
 Prefix: /opt/plugins
-Obsoletes: monitor-plugin-check_aws
 Requires: python36
 Requires: op5-monitor-user
 BuildRequires: python36
