@@ -2,24 +2,32 @@ from argparse import Namespace
 
 import pytest
 
-from nagios_aws import CloudWatchResource, consts, parse_cmdline
+from nagios_aws import CloudWatchResource, parse_cmdline
+from nagios_aws.consts import InputDefault
 from nagios_aws.target import Target
 
 
 class MockResource(CloudWatchResource):
-    def __init__(self, cfg, response=None):
-        self.__response = response or {}
-        super(MockResource, self).__init__(cfg)
+    def __init__(self, cli_args, response=None, metrics_available=None):
+        self._metrics_available = metrics_available
+        self._response = response or {}
+        super(MockResource, self).__init__(cli_args)
 
-    def _send(self, *args, **kwargs):
-        return self.__response
+    def _metrics_get(self, **kwargs):
+        if isinstance(self._metrics_available, list):
+            metrics = self._metrics_available.pop(0)
+        else:
+            metrics = self._metrics_available
+
+        return metrics
+
+    def _statistics_get(self, *args, **kwargs):
+        return self._response
 
 
-def make_namespace(payload):
-    """Creates new namespace using default config merged with given payload"""
-
-    cfg = consts.InputDefault().__dict__
-    cfg.update(payload or {})
+def make_namespace(cmdargs):
+    cfg = InputDefault().__dict__
+    cfg.update(cmdargs or {})
     return Namespace(**cfg)
 
 
@@ -38,17 +46,17 @@ def cli():
 
 @pytest.fixture
 def resource():
-    def go(payload=None, response=None):
-        return MockResource(make_namespace(payload), response)
+    def go(cmdargs=None, response=None, metrics_available=None):
+        return MockResource(make_namespace(cmdargs), response, metrics_available)
 
     yield go
 
 
 @pytest.fixture
 def target(resource):
-    def go(payload=None, response=None):
+    def go(cmdargs=None, response=None):
         return Target(
-            make_namespace(payload), resource_cls=MockResource, response=response
+            make_namespace(cmdargs), resource_cls=MockResource, response=response
         )
 
     yield go
