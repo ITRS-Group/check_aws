@@ -36,6 +36,7 @@ python -m pytest
 %install
 export LC_ALL=en_US.UTF-8
 /usr/bin/python3 -m venv venv
+venv/bin/pip install --upgrade pip
 venv/bin/pip install poetry
 venv/bin/python -m poetry build
 venv/bin/pip download -r requirements.txt -d dist
