@@ -83,25 +83,25 @@ class CloudWatchResource(nagiosplugin.Resource):
         )
 
         response = self._metrics_get(Namespace=namespace, MetricName=metric)
-        metrics = response.get("Metrics")
-
-        # Create set of available dimensions from `dimension` items in the metrics object
-        for m in metrics:
-            avail_dimensions.extend(
-                [(d["Name"], d["Value"]) for d in m["Dimensions"] if d]
-            )
 
         # Perform validation
-        if not metrics:
+        if not response.get("Metrics"):
             # Figure out what went wrong
             response = self._metrics_get(MetricName=metric)
-            if response["Metrics"]:  # Does the given metric exist?
+            if response.get("Metrics"):  # Does the given metric exist?
                 raise InvalidMetricNamespace(
                     f"No metric of type '{metric}' in Namespace '{namespace}'"
                 )
             else:  # Invalid metric type
                 raise InvalidMetricType(f"No such metric type: {metric}")
-        elif not req_dimensions.issubset(set(avail_dimensions)):
+
+        # Create set of available dimensions from `dimension` items in the metrics object
+        for m in response["Metrics"]:
+            avail_dimensions.extend(
+                [(d["Name"], d["Value"]) for d in m["Dimensions"] if d]
+            )
+
+        if not req_dimensions.issubset(set(avail_dimensions)):
             raise InvalidDimension(
                 f"No Metrics of type '{metric}' with Dimensions '{req_dimensions}'"
             )
