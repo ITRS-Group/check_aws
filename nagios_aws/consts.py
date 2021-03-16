@@ -3,6 +3,7 @@ from dataclasses import dataclass
 NAME = "AWS"
 STATISTICS = ["Average", "Sum", "SampleCount", "Maximum", "Minimum"]
 UNITS = [
+    None,
     "Percent",
     "Count",
     "Seconds",
@@ -32,11 +33,13 @@ UNITS = [
 ]
 
 
+# @TODO - move to cli.options
+# @TODO - rename to CommandArguments
 @dataclass
 class InputDefault:
     namespace: str = ""
     metric: str = ""
-    unit: str = "Count"
+    unit: str = None
     region: str = ""
     credentials_file: str = ""
     profile: str = "default"

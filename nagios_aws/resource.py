@@ -8,6 +8,7 @@ from .exceptions import (
     InvalidDimension,
     InvalidMetricNamespace,
     InvalidMetricType,
+    UnexpectedDatapointUnit,
     UnexpectedResponse,
 )
 
@@ -41,7 +42,6 @@ class CloudWatchResource(nagiosplugin.Resource):
             Namespace=cmdargs.namespace,
             Statistics=(cmdargs.statistic,),
             Dimensions=cmdargs.dimensions,
-            Unit=cmdargs.unit,
         )
 
         if validate is True:
@@ -138,7 +138,15 @@ class CloudWatchResource(nagiosplugin.Resource):
 
         stat_name = self.cmdargs.statistic.capitalize()
         for point in response["Datapoints"]:
+            # If a unit was provided, make sure it matches the returned datapoint.unit
+            if self.cmdargs.unit and point["Unit"] != self.cmdargs.unit:
+                unit = point["Unit"]
+                raise UnexpectedDatapointUnit(
+                    f"Unexpected datapoint unit: {unit}, expected: {self.cmdargs.unit}"
+                )
+
             stat_val = point.get(stat_name)
+            # @TODO - add uom from point["Unit"], preferably using ISO abbreviations, i.e. "Seconds"=>"s"
             yield nagiosplugin.Metric(self.cmdargs.metric, stat_val)
 
     @property
