@@ -36,6 +36,7 @@ python -m pytest
 %install
 export LC_ALL=en_US.UTF-8
 /usr/bin/python3 -m venv venv
+venv/bin/pip install --upgrade pip
 venv/bin/pip install poetry
 venv/bin/python -m poetry build
 venv/bin/pip download -r requirements.txt -d dist
@@ -72,7 +73,9 @@ venv/bin/pip install --upgrade -f dist --no-index dist/nagios_aws-*.whl
 rm -rf %buildroot
 
 %changelog
-* Fri Jan 06 2021 Robert Wikman <rwikman@op5.com> - 0.3.0
+* Mon Mar 15 2021 Robert Wikman <rwikman@op5.com> - 0.3.1
+- Add CLI input validation
+* Wed Jan 06 2021 Robert Wikman <rwikman@op5.com> - 0.3.0
 - Switch to Boto3 for interacting with AWS
 * Wed Oct 28 2020 Erik Sjöström <esjostrom@itrsgroup.com>
 - Remove build artifacts and make the venv visible to the user
