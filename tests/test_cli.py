@@ -1,7 +1,7 @@
 import pytest
 from botocore.exceptions import NoCredentialsError
 
-from nagios_aws.consts import InputDefault
+from check_aws.consts import InputDefault
 
 CLI_DEFAULTS = {
     "--namespace": "AWS/VPN",

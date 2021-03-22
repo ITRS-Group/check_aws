@@ -2,7 +2,7 @@ import sys
 
 from nagiosplugin import Check, guarded
 
-from nagios_aws import parse_cmdline
+from check_aws import parse_cmdline
 
 from .target import Target
 

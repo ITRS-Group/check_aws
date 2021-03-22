@@ -1,7 +1,7 @@
 import pytest
 
-from nagios_aws.consts import NAME
-from nagios_aws.exceptions import (
+from check_aws.consts import NAME
+from check_aws.exceptions import (
     InvalidDimension,
     InvalidMetricNamespace,
     InvalidMetricType,

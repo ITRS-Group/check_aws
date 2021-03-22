@@ -5,7 +5,7 @@ endif
 .PHONY: lint clean publish install check test
 
 help:
-	@echo "\n%% nagios_aws dev tools %%"
+	@echo "\n%% check_aws dev tools %%"
 	@echo - install: create venv and install dependencies
 	@echo - update: update dependencies
 	@echo - shell: activate virtual environment
@@ -33,15 +33,15 @@ export:
 
 clean:
 	rm -rf dist .mypy_cache .pytest_cache .coverage
-	find nagios_aws -type d -name __pycache__ -exec rm -rv {} +
-	find nagios_aws -type f -name "*.py[co]" -delete
+	find check_aws -type d -name __pycache__ -exec rm -rv {} +
+	find check_aws -type f -name "*.py[co]" -delete
 
 lint:
-	poetry run mypy nagios_aws
-	poetry run autoflake --recursive nagios_aws tests
-	poetry run black nagios_aws tests --check
+	poetry run mypy check_aws
+	poetry run autoflake --recursive check_aws tests
+	poetry run black check_aws tests --check
 
 reformat:
-	poetry run autoflake --in-place --recursive nagios_aws tests
-	poetry run black nagios_aws tests
-	poetry run isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --combine-as --line-width 88 nagios_aws tests
+	poetry run autoflake --in-place --recursive check_aws tests
+	poetry run black check_aws tests
+	poetry run isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --combine-as --line-width 88 check_aws tests
