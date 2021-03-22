@@ -2,8 +2,8 @@ from argparse import Namespace
 
 import pytest
 
-from nagios_aws import CloudWatchResource, consts, parse_cmdline
-from nagios_aws.target import Target
+from check_aws import CloudWatchResource, consts, parse_cmdline
+from check_aws.target import Target
 
 
 class MockResource(CloudWatchResource):

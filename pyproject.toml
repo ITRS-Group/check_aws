@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "nagios_aws"
+name = "check_aws"
 version = "0.3.0"
 description = "AWS Nagios plugin"
 authors = ["Robert Wikman <rwikman@op5.com>"]

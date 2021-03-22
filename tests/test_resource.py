@@ -1,4 +1,4 @@
-from nagios_aws.consts import NAME
+from check_aws.consts import NAME
 
 
 def test_resource_frame(resource):

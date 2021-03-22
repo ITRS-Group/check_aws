@@ -1,6 +1,6 @@
 import argparse
 
-from nagios_aws.consts import UNITS
+from check_aws.consts import UNITS
 
 from .options import opts
 

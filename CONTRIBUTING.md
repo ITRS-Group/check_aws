@@ -1,6 +1,6 @@
-# Contributing to nagios_aws
+# Contributing to check_aws
 
-Thanks for your interest in contributing to nagios_aws! Below follows a short set of contributing guidelines.
+Thanks for your interest in contributing to check_aws! Below follows a short set of contributing guidelines.
 
 ## Testing
 
