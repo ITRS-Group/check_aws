@@ -5,6 +5,7 @@ from nagios_aws.consts import UNITS
 from .options import opts
 
 
+# @TODO - move to cli.parse
 def parse_cmdline(args):
     parser = argparse.ArgumentParser(
         description="Plugin for monitoring CloudWatch-enabled AWS instances"

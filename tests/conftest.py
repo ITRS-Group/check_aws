@@ -6,12 +6,22 @@ from nagios_aws import CloudWatchResource, parse_cmdline
 from nagios_aws.consts import InputDefault
 from nagios_aws.target import Target
 
+METRICS_DEFAULT = {
+    "Metrics": [
+        {
+            "Namespace": "AWS/EC2",
+            "MetricName": "CPUCreditUsage",
+            "Dimensions": [],
+        }
+    ]
+}
+
 
 class MockResource(CloudWatchResource):
-    def __init__(self, cli_args, response=None, metrics_available=None):
+    def __init__(self, cmdargs, response=None, metrics_available=None):
         self._metrics_available = metrics_available
         self._response = response or {}
-        super(MockResource, self).__init__(cli_args)
+        super(MockResource, self).__init__(cmdargs)
 
     def _metrics_get(self, **kwargs):
         if isinstance(self._metrics_available, list):
@@ -47,7 +57,9 @@ def cli():
 @pytest.fixture
 def resource():
     def go(cmdargs=None, response=None, metrics_available=None):
-        return MockResource(make_namespace(cmdargs), response, metrics_available)
+        return MockResource(
+            make_namespace(cmdargs), response, metrics_available or METRICS_DEFAULT
+        )
 
     yield go
 

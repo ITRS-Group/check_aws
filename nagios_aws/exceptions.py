@@ -1,4 +1,4 @@
-class UnexpectedResponse(Exception):
+class UnexpectedResponse(Exception):  # @TODO - rename to UnexpectedLabel
     """Raised if Label in the response doesn't match the given Statistic"""
 
 
@@ -12,3 +12,7 @@ class InvalidMetricNamespace(Exception):
 
 class InvalidMetricType(Exception):
     """Raised if the given metric doesn't exist"""
+
+
+class UnexpectedDatapointUnit(Exception):
+    """Raised if an unexpected Datapoint unit was returned"""

@@ -4,7 +4,56 @@ import pytest
 from nagiosplugin import Metric, ScalarContext
 
 from nagios_aws import CloudWatchResource, CloudWatchSummary
-from nagios_aws.exceptions import UnexpectedResponse
+from nagios_aws.exceptions import UnexpectedDatapointUnit, UnexpectedResponse
+
+
+def test_probe_unexpected_unit(target):
+    response = {
+        "Label": "Test",
+        "Datapoints": [
+            {
+                "Timestamp": datetime(1980, 2, 2),
+                "Average": 321,
+                "Unit": "Count",
+            },
+        ],
+    }
+
+    t = target(dict(metric="Test", unit="Megabytes"), response)
+    with pytest.raises(UnexpectedDatapointUnit):
+        t.resource.probe().__next__()
+
+
+def test_probe_expected_unit(target):  # @TODO - test Metric.oum when it's been added
+    response = {
+        "Label": "Test",
+        "Datapoints": [
+            {
+                "Timestamp": datetime(1980, 2, 2),
+                "Average": 321,
+                "Unit": "Megabytes",
+            },
+        ],
+    }
+
+    t = target(dict(metric="Test", unit="Megabytes"), response)
+    assert t.resource.probe().__next__()
+
+
+def test_probe_default_unit(target):  # @TODO - test Metric.oum when it's been added
+    response = {
+        "Label": "Test",
+        "Datapoints": [
+            {
+                "Timestamp": datetime(1980, 2, 2),
+                "Average": 321,
+                "Unit": "Megabytes",
+            },
+        ],
+    }
+
+    t = target(dict(metric="Test"), response)
+    assert t.resource.probe().__next__()
 
 
 def test_probe_metrics_parsed_single(target):
