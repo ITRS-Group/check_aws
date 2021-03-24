@@ -1,8 +1,28 @@
+from dataclasses import dataclass
+
 from boto3 import Session
 
-from check_aws.consts import STATISTICS, InputDefault
-
+from ..consts import STATISTICS
 from .actions import CredentialsFileParser, DimensionsSerializer
+
+
+@dataclass
+class CommandArguments:
+    namespace: str = ""
+    metric: str = ""
+    unit: str = None
+    region: str = ""
+    credentials_file: str = ""
+    profile: str = "default"
+    statistic: str = "Average"
+    dimensions: tuple = ()
+    period: int = 60
+    lag: int = 0
+    warning: int = 0
+    critical: int = 0
+    verbosity: int = 0
+    delta: int = 0
+
 
 opts = [
     (
@@ -11,7 +31,7 @@ opts = [
             "dest": "region",
             "action": "store",
             "type": str,
-            "default": InputDefault.metric,
+            "default": CommandArguments.metric,
             "choices": Session().get_available_regions("ec2"),
             "required": True,
             "help": "AWS region name",
@@ -23,7 +43,7 @@ opts = [
             "dest": "unit",
             "action": "store",
             "type": str,
-            "default": InputDefault.unit,
+            "default": CommandArguments.unit,
             "required": False,
             "help": "Response unit",
         },
@@ -34,7 +54,7 @@ opts = [
             "dest": "metric",
             "action": "store",
             "type": str,
-            "default": InputDefault.metric,
+            "default": CommandArguments.metric,
             "required": True,
             "help": "Metric name",
         },
@@ -45,7 +65,7 @@ opts = [
             "dest": "namespace",
             "action": "store",
             "type": str,
-            "default": InputDefault.namespace,
+            "default": CommandArguments.namespace,
             "required": True,
             "help": "Metric namespace",
         },
@@ -57,7 +77,7 @@ opts = [
             "action": DimensionsSerializer,
             "type": str,
             "nargs": "?",
-            "default": InputDefault.dimensions,
+            "default": CommandArguments.dimensions,
             "help": "Dimensions of one or more metrics: dimension=value[,dimension=value...]",
         },
     ),
@@ -67,7 +87,7 @@ opts = [
             "dest": "profile",
             "action": "store",
             "type": str,
-            "default": InputDefault.profile,
+            "default": CommandArguments.profile,
             "help": "Profile name from ~/.aws/credentials (default: %(default)s)",
         },
     ),
@@ -78,7 +98,7 @@ opts = [
             "action": "store",
             "type": str,
             "choices": STATISTICS,
-            "default": InputDefault.statistic,
+            "default": CommandArguments.statistic,
             "help": "Statistic for evaluating metrics (default: %(default)s)",
         },
     ),
@@ -88,7 +108,7 @@ opts = [
             "dest": "warning",
             "action": "store",
             "type": str,
-            "default": InputDefault.warning,
+            "default": CommandArguments.warning,
             "help": "Warning if threshold is outside range (default: %(default)s)",
         },
     ),
@@ -98,7 +118,7 @@ opts = [
             "dest": "critical",
             "action": "store",
             "type": str,
-            "default": InputDefault.critical,
+            "default": CommandArguments.critical,
             "help": "Critical if threshold is outside range (default: %(default)s)",
         },
     ),
@@ -107,7 +127,7 @@ opts = [
         {
             "dest": "verbosity",
             "action": "count",
-            "default": InputDefault.verbosity,
+            "default": CommandArguments.verbosity,
             "help": "Verbosity (use up to 3 times)",
         },
     ),
@@ -118,7 +138,7 @@ opts = [
             "action": "store",
             "type": int,
             "nargs": "?",
-            "default": InputDefault.period,
+            "default": CommandArguments.period,
             "help": "Period in seconds over which the statistic is applied (default: %(default)s)",
         },
     ),
@@ -128,7 +148,7 @@ opts = [
             "dest": "delta",
             "action": "store",
             "type": int,
-            "default": InputDefault.delta,
+            "default": CommandArguments.delta,
             "help": "Delta measurement in seconds",
         },
     ),
@@ -138,9 +158,9 @@ opts = [
             "dest": "lag",
             "action": "store",
             "type": int,
-            "default": InputDefault.lag,
+            "default": CommandArguments.lag,
             "help": "Delay in seconds to add to starting time for gathering metric."
-                    "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
+            "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
         },
     ),
     (
@@ -150,7 +170,7 @@ opts = [
             "action": CredentialsFileParser,
             "type": str,
             "nargs": "?",
-            "default": InputDefault.credentials_file,
+            "default": CommandArguments.credentials_file,
             "help": "File containing AWS credentials (DEPRECATED)",
         },
     ),
@@ -161,7 +181,7 @@ opts = [
             "action": CredentialsFileParser,
             "type": str,
             "nargs": "?",
-            "default": InputDefault.credentials_file,
+            "default": CommandArguments.credentials_file,
             "help": "File containing AWS credentials",
         },
     ),

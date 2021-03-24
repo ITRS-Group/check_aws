@@ -1,7 +1,7 @@
 import pytest
 from botocore.exceptions import NoCredentialsError
 
-from check_aws.consts import InputDefault
+from check_aws.cli.options import CommandArguments
 
 CLI_DEFAULTS = {
     "--namespace": "AWS/VPN",
@@ -21,7 +21,7 @@ def test_invalid_unit(cli):
 
 
 def test_default(cli):
-    assert cli(CLI_DEFAULTS).credentials_file == InputDefault.credentials_file
+    assert cli(CLI_DEFAULTS).credentials_file == CommandArguments.credentials_file
 
 
 def test_non_file(cli):
