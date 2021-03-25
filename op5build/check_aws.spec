@@ -1,5 +1,5 @@
 %define profile_source_path profiles/op5_monitor.py
-%define app_install_path /opt/monitor/op5/nagios_aws
+%define app_install_path /opt/monitor/op5/check_aws
 %define check_install_path /opt/plugins/check_aws.py
 %define user monitor
 
@@ -52,7 +52,7 @@ cd %{app_install_path}
 %{__rm} -rf dist venv
 %{__tar} xvfz dist.tar.gz
 /usr/bin/python3 -m venv venv
-venv/bin/pip install --upgrade -f dist --no-index dist/nagios_aws-*.whl
+venv/bin/pip install --upgrade -f dist --no-index dist/check_aws-*.whl
 %{__chown} -R %{user} .
 
 # Remove build artifacts

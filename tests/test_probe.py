@@ -3,8 +3,8 @@ from datetime import datetime
 import pytest
 from nagiosplugin import Metric, ScalarContext
 
-from nagios_aws import CloudWatchResource, CloudWatchSummary
-from nagios_aws.exceptions import UnexpectedDatapointUnit, UnexpectedResponse
+from check_aws import CloudWatchResource, CloudWatchSummary
+from check_aws.exceptions import UnexpectedDatapointUnit, UnexpectedResponse
 
 
 def test_probe_unexpected_unit(target):

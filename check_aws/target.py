@@ -1,6 +1,6 @@
 from nagiosplugin import ScalarContext
 
-from nagios_aws import CloudWatchResource, CloudWatchSummary
+from check_aws import CloudWatchResource, CloudWatchSummary
 
 
 class Target:
