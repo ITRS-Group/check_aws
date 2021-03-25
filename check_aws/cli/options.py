@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from boto3 import Session
 
 from ..consts import STATISTICS
-from .actions import CredentialsFileParser, DimensionsSerializer
+from .actions import CredentialsFileSetter, DimensionsSerializer
 
 
 @dataclass
@@ -167,7 +167,7 @@ opts = [
         ["-C", "--credentials"],
         {
             "dest": "credentials_file",
-            "action": CredentialsFileParser,
+            "action": CredentialsFileSetter,
             "type": str,
             "nargs": "?",
             "default": CommandArguments.credentials_file,
@@ -178,7 +178,7 @@ opts = [
         ["-f", "--credentials_file"],
         {
             "dest": "credentials_file",
-            "action": CredentialsFileParser,
+            "action": CredentialsFileSetter,
             "type": str,
             "nargs": "?",
             "default": CommandArguments.credentials_file,
