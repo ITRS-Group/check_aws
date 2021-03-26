@@ -75,28 +75,30 @@ The program looks for credentials in *~/.aws/credentials* by default. Use `--cre
 
 ## Examples
 
+Run with `$ python -m check_aws <arguments>`.
+
 #### VPN availability
 
 ```
-$ ./check-aws.py --metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4
+$ --metric TunnelState --namespace AWS/VPN -r eu-west-1 -w @0 -c @0 -d TunnelIpAddress=1.2.3.4
 ```
 
 #### Free Space
 
 ```
-$ ./check-aws.py --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000
+$ --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @5000000000 -c @3000000000
 ```
 
 #### Credit Usage
 
 ```
-$ ./check-aws.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
+$ --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
 ```
 
 #### CPU utilization
 
 ```
-$ ./check-aws.py --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
+$ --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
 ```
 
 ## Troubleshooting
