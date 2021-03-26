@@ -31,7 +31,7 @@ opts = [
             "dest": "region",
             "action": "store",
             "type": str,
-            "default": CommandArguments.metric,
+            "default": CommandArguments.region,
             "choices": Session().get_available_regions("ec2"),
             "required": True,
             "help": "AWS region name",
@@ -160,7 +160,7 @@ opts = [
             "type": int,
             "default": CommandArguments.lag,
             "help": "Delay in seconds to add to starting time for gathering metric."
-            "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
+                    "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
         },
     ),
     (
