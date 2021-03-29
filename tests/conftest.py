@@ -3,7 +3,7 @@ from argparse import Namespace
 import pytest
 
 from check_aws import CloudWatchResource, parse_cmdline
-from check_aws.consts import InputDefault
+from check_aws.cli.options import CommandArguments
 from check_aws.target import Target
 
 METRICS_DEFAULT = {
@@ -36,7 +36,7 @@ class MockResource(CloudWatchResource):
 
 
 def make_namespace(cmdargs):
-    cfg = InputDefault().__dict__
+    cfg = CommandArguments().__dict__
     cfg.update(cmdargs or {})
     return Namespace(**cfg)
 
