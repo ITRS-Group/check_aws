@@ -5,8 +5,6 @@
 [![image](https://badgen.net/codecov/c/github/ITRS-Group/check-aws)](https://codecov.io/gh/ITRS-Group/check-aws)
 [![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/check-aws/master/LICENSE)
 
-Provides monitoring for
-
 To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
 check out
 the [AWSEC2 UserGuide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html) to see
