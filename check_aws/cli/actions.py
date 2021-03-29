@@ -6,9 +6,12 @@ from botocore.exceptions import NoCredentialsError
 
 
 class DimensionsSerializer(Action):
-    """Performs (de)serialization of Dimensions"""
-
     def __call__(self, parser, namespace, value, option_string=None):
+        """Load dimensions
+
+        Deserializes the given value into `namespace.dimensions`
+        """
+
         if not value:
             return
 
@@ -17,10 +20,28 @@ class DimensionsSerializer(Action):
 
     @staticmethod
     def dump(data):
+        """Serialize dimensions
+
+        Args:
+            data: Dict to serialize
+
+        Returns:
+            Comma-separated dimensions string
+        """
+
         return " ({})".format(", ".join("{Name}={Value}".format(**d) for d in data))
 
     @staticmethod
     def load(value):
+        """Deserialize dimensions
+
+        Args:
+            value: String to deserialize
+
+        Returns:
+            Generator yielding list of key-value items
+        """
+
         for pair in value.split(","):
             k, v = pair.split("=")
 
@@ -30,9 +51,15 @@ class DimensionsSerializer(Action):
             yield dict(Name=k, Value=v)
 
 
-class CredentialsFileParser(Action):
+class CredentialsFileSetter(Action):
     def __call__(self, parser, namespace, value, option_string=None):
+        """Set credentials file
+
+        Sets credentials file to use for authenticating with AWS.
+        """
+
         if not value:
+            # Use default ~/.aws/credentials
             value = path.join(path.expanduser("~"), ".aws", "credentials")
 
         if option_string == "--credentials":
@@ -43,8 +70,8 @@ class CredentialsFileParser(Action):
             )
 
         if not path.exists(value):
-            # We want NoCredentialsError to be raised upon parsing CLI args, rather
-            # than when actually attempting to authenticate.
+            # We want NoCredentialsError to be raised upon parsing CLI args if
+            # there's an error, rather than when actually attempting to authenticate.
             raise NoCredentialsError
 
         # Boto3 only supports setting a custom credentials file via the env
