@@ -9,7 +9,7 @@ from .exceptions import (
     InvalidMetricNamespace,
     InvalidMetricType,
     UnexpectedDatapointUnit,
-    UnexpectedResponse,
+    UnexpectedLabel,
 )
 
 
@@ -132,7 +132,7 @@ class CloudWatchResource(nagiosplugin.Resource):
 
         label = response["Label"]
         if label != self.cmdargs.metric:
-            raise UnexpectedResponse(
+            raise UnexpectedLabel(
                 f"Unexpected Metric in Response. Got: {label}, Expected: {self.cmdargs.metric}"
             )
 

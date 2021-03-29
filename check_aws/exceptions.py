@@ -1,4 +1,4 @@
-class UnexpectedResponse(Exception):  # @TODO - rename to UnexpectedLabel
+class UnexpectedLabel(Exception):
     """Raised if Label in the response doesn't match the given Statistic"""
 
 

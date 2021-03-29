@@ -4,7 +4,7 @@ import pytest
 from nagiosplugin import Metric, ScalarContext
 
 from check_aws import CloudWatchResource, CloudWatchSummary
-from check_aws.exceptions import UnexpectedDatapointUnit, UnexpectedResponse
+from check_aws.exceptions import UnexpectedDatapointUnit, UnexpectedLabel
 
 
 def test_probe_unexpected_unit(target):
@@ -137,7 +137,7 @@ def test_probe_unexpected_response_metric(target):
         ],
     }
 
-    with pytest.raises(UnexpectedResponse):
+    with pytest.raises(UnexpectedLabel):
         t = target(dict(metric="Uhh"), response)
         list(t.resource.probe())
 
