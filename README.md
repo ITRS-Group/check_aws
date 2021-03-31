@@ -1,14 +1,14 @@
-# check-aws: Nagios-compatible plugin for monitoring AWS
+# check_aws: Nagios-compatible plugin for monitoring AWS
 
-[![image](https://badgen.net/travis/ITRS-Group/check-aws)](https://travis-ci.org/ITRS-Group/check-aws)
-[![image](https://badgen.net/lgtm/grade/g/ITRS-Group/check-aws)](https://lgtm.com/projects/g/ITRS-Group/check-aws)
-[![image](https://badgen.net/codecov/c/github/ITRS-Group/check-aws)](https://codecov.io/gh/ITRS-Group/check-aws)
-[![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/check-aws/master/LICENSE)
+[![image](https://badgen.net/travis/ITRS-Group/check_aws)](https://travis-ci.org/ITRS-Group/check_aws)
+[![image](https://badgen.net/lgtm/grade/g/ITRS-Group/check_aws)](https://lgtm.com/projects/g/ITRS-Group/check_aws)
+[![image](https://badgen.net/codecov/c/github/ITRS-Group/check_aws)](https://codecov.io/gh/ITRS-Group/check_aws)
+[![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/check_aws/master/LICENSE)
 
 To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
 check out
 the [AWSEC2 UserGuide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html) to see
-how things maps to **check-aws** input.
+how things maps to **check_aws** input.
 
 ### Table of Contents
 
@@ -28,7 +28,7 @@ how things maps to **check-aws** input.
 ## CLI Usage
 
 ```
-usage: check-aws [-h] -r REGION -m METRIC -n NAMESPACE
+usage: check_aws [-h] -r REGION -m METRIC -n NAMESPACE
                  [-u UNIT] [-d [DIMENSIONS]] [-p PROFILE]
                  [-s {Average,Sum,SampleCount,Maximum,Minimum}]
                  [-w WARNING] [-c CRITICAL] [-v] [-P [PERIOD]] [-D DELTA]
@@ -74,7 +74,7 @@ The program looks for credentials in *~/.aws/credentials* by default. Use `--cre
 
 ## Profiles
 
-The [profiles](/profiles) directory contains a set of scripts for running the `check-aws` application in various
+The [profiles](/profiles) directory contains a set of scripts for running the `check_aws` app in various
 environments.
 
 ## Examples
