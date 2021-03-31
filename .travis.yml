@@ -9,7 +9,6 @@ before_install:
 install:
   - poetry install
 script:
-  - make lint
   - make test
 after_success:
   - codecov
