@@ -1,3 +1,41 @@
-build:
-  exclude: ['el6/x86_64']
+pre:
+  steps: |
+    set -ex
+    rm -rf venv dist
 
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install --upgrade pip
+    pip install poetry wheel==0.34.2 pytest
+
+    cd src
+
+    # We build all the wheels now while we can access PyPI and github repos
+    poetry build -f wheel  # writes to dist/
+    pip wheel -r requirements.txt -w dist/
+
+    # Install all dependencies to run tests
+    pip install dist/*.whl
+    python -m pytest
+
+    # Also include the current pip version so it can be used in the installation
+    pip wheel pip -w dist/
+
+post:
+  steps: |
+    set -ex
+    # Smoke test
+    /opt/plugins/check_aws.py --help
+
+    if [ \${RHEL_VERSION:-0} -ge 8 ]; then
+      # Run unit tests using the installed check_aws package and dependencies
+      # from rpm repos. Install test tools from dist/, created in pre step above
+      # that was copied here from the build system.
+
+      # Prevent Python from importing check_aws from CWD instead of the installed package:
+      mv check_aws{,.src}
+
+      python3 -m pip install --no-index -f dist/ -U pip
+      python3 -m pip install --no-index -f dist/ dist/pytest*.whl
+      python3 -m pytest -v
+    fi

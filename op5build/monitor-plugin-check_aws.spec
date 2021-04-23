@@ -1,3 +1,4 @@
+%define debug_package %{nil}
 %define profile_source_path profiles/op5_monitor.py
 %define app_install_path /opt/monitor/op5/check_aws
 %define check_install_path /opt/plugins/check_aws.py
@@ -11,12 +12,19 @@ License: GPLv3+
 Group: op5/system-addons
 URL: https://www.itrsgroup.com
 Prefix: /opt/plugins
-Requires: python36
-BuildRequires: python36
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
-BuildArch: noarch
 AutoReq: no
+%if 0%{?rhel} >= 8
+BuildRequires: python3-devel
+Requires: python3-boto3
+Requires: python3-dataclasses
+Requires: python3-nagiosplugin
+%else
+Requires: python36
+Requires(post): python36
+BuildRequires: python36
+%endif
 
 %description
 Nagios plugin for monitoring CloudWatch-enabled AWS services
@@ -25,33 +33,32 @@ Nagios plugin for monitoring CloudWatch-enabled AWS services
 %setup -q -n %{name}-%{version}
 
 %build
-python3 -m venv venv
-source venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pip install pytest
-python -m pytest
 
 %install
 export LC_ALL=en_US.UTF-8
-/usr/bin/python3 -m venv venv
-venv/bin/pip install --upgrade pip
-venv/bin/pip install poetry
-venv/bin/python -m poetry build
-venv/bin/pip download -r requirements.txt -d dist
-%{__tar} cvfz dist.tar.gz dist
 
-%{__install} -Dp -m 644 dist.tar.gz %{buildroot}%{app_install_path}/dist.tar.gz
+%if 0%{?rhel} >= 8
+# Install check_aws into %%python3_sitelib and require dependencies from rpm repos.
+%py3_install_wheel check_aws*.whl
+%{__sed} -i -e '1 s|^#!.*|#!%{__python3} -I|' %{profile_source_path}
+%else
+# Ship pre-built binary wheels, to be installed in %%post.
+%{__install} --directory %{buildroot}%{app_install_path}/wheels
+%{__install} -m 644 -t %{buildroot}%{app_install_path}/wheels dist/*.whl
+%endif
+
 %{__install} -Dp %{profile_source_path} %{buildroot}%{check_install_path}
 
+%if 0%{?rhel} < 8
 %post
 cd %{app_install_path}
 %{__rm} -rf dist venv
-%{__tar} xfz dist.tar.gz
 /usr/bin/python3 -m venv venv
-venv/bin/pip --quiet install --upgrade -f dist --no-index dist/check_aws-*.whl
-
-# Remove build artifacts
-%{__rm} --recursive --force %{app_install_path}/dist
+# First install the pip version that was used in the build
+venv/bin/pip --quiet install --upgrade -f wheels --no-index --no-deps pip
+# Then install all the remaining packages
+venv/bin/pip --quiet install --upgrade -f wheels --no-index check_aws
+%endif
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -60,13 +67,17 @@ fi
 
 %postun
 # Remove old installation path created by previous versions before path was
-# changed to current path, as venv created in %post is left there.
+# changed to current path, as venv created in %%post is left there.
 %{__rm} -rf %{dirname:%{app_install_path}}/nagios_aws || :
 
 
 %files
+%if 0%{?rhel} >= 8
+%python3_sitelib/check_aws*
+%else
 %{app_install_path}
 %ghost %dir %{app_install_path}/venv
+%endif
 %{check_install_path}
 %license LICENSE
 %doc README.md
@@ -75,6 +86,11 @@ fi
 rm -rf %buildroot
 
 %changelog
+* Mon May  3 2021 Aksel Sjögren <asjogren@itrsgroup.com> - v2021.5.1
+- Remove dependency on op5-monitor-user.
+- Disable creation of debug package.
+- Build for EL8; distribute prebuilt package and rely on Python dependencies
+  via OS package manager.
 * Mon Mar 15 2021 Robert Wikman <rwikman@op5.com> - 0.3.1
 - Add CLI input validation
 * Wed Jan 06 2021 Robert Wikman <rwikman@op5.com> - 0.3.0
