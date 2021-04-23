@@ -7,3 +7,7 @@ updates:
       interval: "daily"
     reviewers:
       - "ITRS-Group/team-b"
+    ignore:
+      - dependency-name: boto3
+        # For boto3 we ignore all 1.17.x updates
+        versions: 1.17.x
