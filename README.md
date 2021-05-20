@@ -5,9 +5,11 @@
 [![image](https://badgen.net/codecov/c/github/ITRS-Group/check_aws)](https://codecov.io/gh/ITRS-Group/check_aws)
 [![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/check_aws/master/LICENSE)
 
-To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
-check out the [list of AWS Services That Publish CloudWatch Metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html) to see
-how things maps to **check_aws** input.
+
+This plugin can be used to monitor [AWS Services That Publish CloudWatch Metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html).
+
+It uses [boto/boto3](https://github.com/boto/boto3) for interacting with AWS CloudWatch, and the [mpounsett/nagiosplugin](https://github.com/mpounsett/nagiosplugin) library for working with the Nagios plugin format.
+
 
 ### Table of Contents
 
