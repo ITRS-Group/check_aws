@@ -6,7 +6,7 @@ from .options import opts
 
 def parse_cmdline(args):
     parser = argparse.ArgumentParser(
-        description="Plugin for monitoring CloudWatch-enabled AWS instances"
+        description="Plugin for monitoring AWS via CloudWatch"
     )
 
     for opt, conf in opts:

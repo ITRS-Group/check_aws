@@ -5,21 +5,24 @@
 [![image](https://badgen.net/codecov/c/github/ITRS-Group/check_aws)](https://codecov.io/gh/ITRS-Group/check_aws)
 [![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/check_aws/master/LICENSE)
 
-To get started, visit the [AWS Web Console](https://console.aws.amazon.com/cloudwatch) to determine what to monitor, and
-check out
-the [AWSEC2 UserGuide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html) to see
-how things maps to **check_aws** input.
+
+This plugin can be used to monitor [AWS Services That Publish CloudWatch Metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html).
+
+It uses [boto/boto3](https://github.com/boto/boto3) for interacting with AWS CloudWatch, and the [mpounsett/nagiosplugin](https://github.com/mpounsett/nagiosplugin) library for working with the Nagios plugin format.
+
 
 ### Table of Contents
 
 - [Usage](#cli-usage)
 - [Credentials](#credentials-and-authentication)
 - [Profiles](#profiles)
+- [Dimensions](#dimensions)
 - [Examples](#examples)
     * [VPN Availability](#vpn-availability)
     * [Free Space](#free-space)
     * [Credit Usage](#credit-usage)
     * [CPU Utilization](#cpu-utilization)
+    * [ECS Running Tasks](#ecs-running-tasks)
 - [Troubleshooting](#troubleshooting)
 - [Other](#other)
     * [AWS CLI](#aws-cli)
@@ -28,43 +31,45 @@ how things maps to **check_aws** input.
 ## CLI Usage
 
 ```
-usage: check_aws [-h] -r REGION -m METRIC -n NAMESPACE
-                 [-u UNIT] [-d [DIMENSIONS]] [-p PROFILE]
-                 [-s {Average,Sum,SampleCount,Maximum,Minimum}]
-                 [-w WARNING] [-c CRITICAL] [-v] [-P [PERIOD]] [-D DELTA]
-                 [-l LAG] [-C [CREDENTIALS_FILE]]
+usage: check-aws.py [-h] -r
+                    {af-south-1,ap-east-1,ap-northeast-1,ap-northeast-2,ap-northeast-3,ap-south-1,ap-southeast-1,ap-southeast-2,ca-central-1,eu-central-1,eu-north-1,eu-south-1,eu-west-1,eu-west-2,eu-west-3,me-south-1,sa-east-1,us-east-1,us-east-2,us-west-1,us-west-2}
+                    [-u UNIT] -m METRIC -n NAMESPACE [-d [DIMENSIONS]]
+                    [-p PROFILE]
+                    [-s {Average,Sum,SampleCount,Maximum,Minimum}]
+                    [-w WARNING] [-c CRITICAL] [-v] [-P [PERIOD]] [-D DELTA]
+                    [-l LAG] [-C [CREDENTIALS_FILE]] [-f [CREDENTIALS_FILE]]
 
-Plugin for monitoring CloudWatch-enabled AWS instances
+Plugin for monitoring AWS via CloudWatch
 
-  -r, --region {af-south-1,ap-east-1,ap-northeast-1,ap-northeast-2,ap-northeast-3,ap-south-1,ap-southeast-1,ap-southeast-2,ca-central-1,eu-central-1,eu-north-1,eu-south-1,eu-west-1,eu-west-2,eu-west-3,me-south-1,sa-east-1,us-east-1,us-east-2,us-west-1,us-west-2}
-                        AWS region name
-  -u, --unit UNIT  Response unit
-  -m, --metric          METRIC
+optional arguments:
+  -h, --help            show this help message and exit
+  -r {af-south-1,ap-east-1,ap-northeast-1,ap-northeast-2,ap-northeast-3,ap-south-1,ap-southeast-1,ap-southeast-2,ca-central-1,eu-central-1,eu-north-1,eu-south-1,eu-west-1,eu-west-2,eu-west-3,me-south-1,sa-east-1,us-east-1,us-east-2,us-west-1,us-west-2}, --region {af-south-1,ap-east-1,ap-northeast-1,ap-northeast-2,ap-northeast-3,ap-south-1,ap-southeast-1,ap-southeast-2,ca-central-1,eu-central-1,eu-north-1,eu-south-1,eu-west-1,eu-west-2,eu-west-3,me-south-1,sa-east-1,us-east-1,us-east-2,us-west-1,us-west-2}
+                        AWS Region
+  -u UNIT, --unit UNIT  Expected unit in the response
+  -m METRIC, --metric METRIC
                         Metric name
-  -n, --namespace NAMESPACE
-                        Metric namespace
-  -d, --dimensions [DIMENSIONS]
-                        Dimensions of one or more metrics:
+  -n NAMESPACE, --namespace NAMESPACE
+                        Service Namespace
+  -d [DIMENSIONS], --dimensions [DIMENSIONS]
+                        One or more Dimensions for selecting datapoints:
                         dimension=value[,dimension=value...]
-  -p, --profile PROFILE
+  -p PROFILE, --profile PROFILE
                         Profile name from ~/.aws/credentials (default:
                         default)
-  -s, --statistic {Average,Sum,SampleCount,Maximum,Minimum}
+  -s {Average,Sum,SampleCount,Maximum,Minimum}, --statistic {Average,Sum,SampleCount,Maximum,Minimum}
                         Statistic for evaluating metrics (default: Average)
-  -w, --warning WARNING
+  -w WARNING, --warning WARNING
                         Warning if threshold is outside range (default: 0)
-  -c, --critical CRITICAL
+  -c CRITICAL, --critical CRITICAL
                         Critical if threshold is outside range (default: 0)
   -v, --verbosity       Verbosity (use up to 3 times)
-  -P, --period [PERIOD]
+  -P [PERIOD], --period [PERIOD]
                         Period in seconds over which the statistic is applied
                         (default: 60)
-  -D, --delta DELTA
+  -D DELTA, --delta DELTA
                         Delta measurement in seconds
-  -l, --lag LAG         Delay in seconds to add to starting time for gathering
-                        metric.useful for ec2 basic monitoring which
-                        aggregates over 5min periods (default: 0)
-  -f, --credentials_file [CREDENTIALS_FILE]
+  -l LAG, --lag LAG     Delay in seconds to add to starting time (default: 0)
+  -f [CREDENTIALS_FILE], --credentials_file [CREDENTIALS_FILE]
                         File containing AWS credentials
 ```
 
@@ -76,6 +81,11 @@ The program looks for credentials in *~/.aws/credentials* by default. Use `--cre
 
 The [profiles](/profiles) directory contains a set of scripts for running the `check_aws` app in various
 environments.
+
+## Dimensions
+
+Dimensions are name/value pairs that are part of the identity of a metric. One or more Dimensions can be provided
+to the `check_aws` CLI to select what to monitor.
 
 ## Examples
 
@@ -96,13 +106,19 @@ $ ./check-aws.py --metric FreeStorageSpace --namespace AWS/RDS -r eu-west-1 -w @
 #### Credit Usage
 
 ```
-$ ./check-aws.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 --period 18000 -d InstanceId=i-0d7c12ec7asdf229
+$ ./check-aws.py --metric CPUCreditUsage --namespace AWS/EC2 -r eu-west-1 -w 2 -c 3 -d InstanceId=i-0d7c12ec7asdf229
 ```
 
 #### CPU utilization
 
 ```
-$ ./check-aws.py --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229 --period 1800
+$ ./check-aws.py --metric CPUUtilization --namespace AWS/EC2 -r eu-west-1 -w 50 -c 70 -d InstanceId=i-0d7c44ec7eaad229
+```
+
+#### ECS Running Tasks
+
+```
+$ ./check_aws.py -d ClusterName=my-ecs-cluster,ServiceName=my-ecs-service --metric RunningTaskCount --namespace ECS/ContainerInsights -w 1 -c 2
 ```
 
 ## Troubleshooting
