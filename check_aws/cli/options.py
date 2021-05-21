@@ -34,7 +34,7 @@ opts = [
             "default": CommandArguments.region,
             "choices": Session().get_available_regions("ec2"),
             "required": True,
-            "help": "AWS region name",
+            "help": "AWS Region",
         },
     ),
     (
@@ -45,7 +45,7 @@ opts = [
             "type": str,
             "default": CommandArguments.unit,
             "required": False,
-            "help": "Response unit",
+            "help": "Expected unit in the response",
         },
     ),
     (
@@ -67,7 +67,7 @@ opts = [
             "type": str,
             "default": CommandArguments.namespace,
             "required": True,
-            "help": "Metric namespace",
+            "help": "Service Namespace",
         },
     ),
     (
@@ -78,7 +78,7 @@ opts = [
             "type": str,
             "nargs": "?",
             "default": CommandArguments.dimensions,
-            "help": "Dimensions of one or more metrics: dimension=value[,dimension=value...]",
+            "help": "One or more Dimensions for selecting metric data: dimension=value[,dimension=value...]",
         },
     ),
     (
@@ -159,8 +159,7 @@ opts = [
             "action": "store",
             "type": int,
             "default": CommandArguments.lag,
-            "help": "Delay in seconds to add to starting time for gathering metric."
-                    "useful for ec2 basic monitoring which aggregates over 5min periods (default: %(default)s)",
+            "help": "Delay in seconds to add to starting time (default: %(default)s)",
         },
     ),
     (
