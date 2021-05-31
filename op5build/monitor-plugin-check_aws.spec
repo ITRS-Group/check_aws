@@ -25,6 +25,10 @@ Requires: python36
 Requires(post): python36
 BuildRequires: python36
 %endif
+# This package has changed from noarch to arch specific. Therefor obsolete
+# everything before the last released noarch package (v2021.5.1), to avoid yum
+# "Error: Protected multilib versions".
+Obsoletes: %{name} <= 2021.5.1-op5.2
 
 %description
 Nagios plugin for monitoring CloudWatch-enabled AWS services
@@ -86,6 +90,8 @@ fi
 rm -rf %buildroot
 
 %changelog
+* Mon May 31 2021 Aksel Sjögren <asjogren@itrsgroup.com>
+- Obsolete previous noarch releases of the package.
 * Mon May  3 2021 Aksel Sjögren <asjogren@itrsgroup.com> - v2021.5.1
 - Remove dependency on op5-monitor-user.
 - Disable creation of debug package.
