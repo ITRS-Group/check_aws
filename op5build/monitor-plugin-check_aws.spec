@@ -17,6 +17,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}
 AutoReq: no
 %if 0%{?rhel} >= 8
 BuildRequires: python3-devel
+Requires: python3
 Requires: python3-boto3
 Requires: python3-dataclasses
 Requires: python3-nagiosplugin
