@@ -10,7 +10,6 @@ help:
 	@echo - update: update dependencies
 	@echo - shell: activate virtual environment
 	@echo - test: run tests
-	@echo - export: generate requirements.txt from pyproject
 	@echo - clean: remove cache and bytecode files
 	@echo - lint: check code formatting
 	@echo - reformat: reformat
@@ -27,9 +26,6 @@ shell:
 
 test:
 	poetry run python -m pytest
-
-export:
-	poetry export --dev -f requirements.txt > requirements.txt
 
 clean:
 	rm -rf dist .mypy_cache .pytest_cache .coverage
