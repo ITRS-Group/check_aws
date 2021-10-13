@@ -12,7 +12,7 @@ pre:
 
     # We build all the wheels now while we can access PyPI and github repos
     poetry build -f wheel  # writes to dist/
-    poetry export --dev -f requirements.txt > requirements.txt
+    poetry export --dev --without-hashes -f requirements.txt > requirements.txt
     pip wheel -r requirements.txt -w dist/
 
     # Install all dependencies to run tests
