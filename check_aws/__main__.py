@@ -7,10 +7,10 @@ from check_aws import parse_cmdline
 from .target import Target
 
 
-@guarded(verbose=False)
+@guarded
 def main():
     args = parse_cmdline(sys.argv[1:])
-    Check(*Target(args)).main(verbose=args.verbosity > 0)
+    Check(*Target(args)).main(verbose=args.verbosity)
 
 
 if __name__ == "__main__":
