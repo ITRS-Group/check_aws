@@ -34,6 +34,13 @@ Obsoletes: %{name} <= 2021.5.1-op5.2
 %description
 Nagios plugin for monitoring CloudWatch-enabled AWS services
 
+%package test
+Summary: Test tools for check_aws
+Requires: monitor-plugin-check_aws == %{version}-%{release}
+
+%description test
+%{summary}.
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -42,9 +49,12 @@ Nagios plugin for monitoring CloudWatch-enabled AWS services
 %install
 export LC_ALL=en_US.UTF-8
 
+# Upgrade to pip version used for building the wheels in pre-build step
+%{__python3} -m pip install --user --no-index -f dist/ --upgrade pip
+
 %if 0%{?rhel} >= 8
 # Install check_aws into %%python3_sitelib and require dependencies from rpm repos.
-%py3_install_wheel check_aws*.whl
+%{__python3} -m pip install -I --no-deps --root %{buildroot} dist/check_aws*.whl
 %{__sed} -i -e '1 s|^#!.*|#!%{__python3} -I|' %{profile_source_path}
 %else
 # Ship pre-built binary wheels, to be installed in %%post.
@@ -53,6 +63,12 @@ export LC_ALL=en_US.UTF-8
 %endif
 
 %{__install} -Dp %{profile_source_path} %{buildroot}%{check_install_path}
+
+# Install all wheels in /test dir, for -test subpackage.
+%{__rm} -f dist/check_aws*
+%{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
+	--prefix %{app_install_path}/test --root %{buildroot} dist/*.whl
+
 
 %if 0%{?rhel} < 8
 %post
@@ -81,16 +97,22 @@ fi
 %python3_sitelib/check_aws*
 %else
 %{app_install_path}
+%exclude %{app_install_path}/test
 %ghost %dir %{app_install_path}/venv
 %endif
 %{check_install_path}
 %license LICENSE
 %doc README.md
 
+%files test
+%{app_install_path}/test
+
 %clean
 rm -rf %buildroot
 
 %changelog
+* Thu Jan  6 2022 Aksel Sjögren <asjogren@itrsgroup.com>
+- Add test subpackage with Python packages for post install tests.
 * Mon May 31 2021 Aksel Sjögren <asjogren@itrsgroup.com>
 - Obsolete previous noarch releases of the package.
 * Mon May  3 2021 Aksel Sjögren <asjogren@itrsgroup.com> - v2021.5.1

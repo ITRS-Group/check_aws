@@ -28,15 +28,15 @@ post:
     # Smoke test
     /opt/plugins/check_aws.py --help
 
-    if [ \${RHEL_VERSION:-0} -ge 8 ]; then
+    if [ ${RHEL_VERSION:-0} -ge 8 ]; then
       # Run unit tests using the installed check_aws package and dependencies
-      # from rpm repos. Install test tools from dist/, created in pre step above
-      # that was copied here from the build system.
+      # from rpm repos.
 
       # Prevent Python from importing check_aws from CWD instead of the installed package:
       mv check_aws{,.src}
 
-      python3 -m pip install --no-index -f dist/ -U pip
-      python3 -m pip install --no-index -f dist/ dist/pytest*.whl
+      PYTHONPATH=/opt/monitor/op5/check_aws/test/lib/python3.6/site-packages
+      PYTHONPATH=$PYTHONPATH:/opt/monitor/op5/check_aws/test/lib64/python3.6/site-packages
+      export PYTHONPATH
       python3 -m pytest -v
     fi
