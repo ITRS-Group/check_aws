@@ -69,6 +69,10 @@ export LC_ALL=en_US.UTF-8
 %{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
 	--prefix %{app_install_path}/test --root %{buildroot} dist/*.whl
 
+# Metadata
+%{__mkdir} -p -m 0751 %buildroot%prefix/metadata
+%{__install} -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/
+
 
 %if 0%{?rhel} < 8
 %post
@@ -103,6 +107,7 @@ fi
 %{check_install_path}
 %license LICENSE
 %doc README.md
+%prefix/metadata/check_aws.metadata
 
 %files test
 %{app_install_path}/test
@@ -111,6 +116,8 @@ fi
 rm -rf %buildroot
 
 %changelog
+* Mon Jan 17 2022 Erik Sjöström <esjostrom@itrsgroup.com>
+- Package metadata.
 * Thu Jan  6 2022 Aksel Sjögren <asjogren@itrsgroup.com>
 - Add test subpackage with Python packages for post install tests.
 * Mon May 31 2021 Aksel Sjögren <asjogren@itrsgroup.com>
