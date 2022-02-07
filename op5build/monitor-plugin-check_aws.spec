@@ -70,7 +70,7 @@ export LC_ALL=en_US.UTF-8
 	--prefix %{app_install_path}/test --root %{buildroot} dist/*.whl
 
 # Metadata
-%{__mkdir} -p -m 0751 %buildroot%prefix/metadata
+%{__mkdir} -p -m 0755 %buildroot%prefix/metadata
 %{__install} -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/
 
 
@@ -107,6 +107,7 @@ fi
 %{check_install_path}
 %license LICENSE
 %doc README.md
+%dir %attr(0755,-,-) %prefix/metadata/
 %prefix/metadata/check_aws.metadata
 
 %files test
