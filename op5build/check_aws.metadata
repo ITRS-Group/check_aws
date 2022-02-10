@@ -5,13 +5,13 @@ check_aws=$USER1$/check_aws.py --region $ARG1$ --metric $ARG2$ --namespace $ARG3
 check_aws
 
 [info]
-Flexible Nagios plugin for monitoring CloudWatch-enabled AWS.
+Naemon Plugin for monitoring AWS using CloudWatch
 
 [why]
-To monitor AWS.
+Monitor AWS
 
 [how]
-Uses boto/boto for interacting with AWS, and flyingcircus/nagiosplugin to convert the results to a Nagios-interpretable format.
+Provides a Naemon-compatible CLI for performing AWS health checks via CloudWatch
 
 [platforms]
 Not platform dependent
