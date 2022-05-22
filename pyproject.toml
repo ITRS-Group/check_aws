@@ -7,7 +7,7 @@ license = "GPL-3.0"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-boto3 = "^1.23.0"
+boto3 = "^1.23.5"
 nagiosplugin = "^1.3.3"
 dataclasses = { version = "^0.7", python = ">=3.6 <3.7" }
 
