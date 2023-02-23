@@ -13,7 +13,7 @@ dataclasses = { version = "^0.7", python = ">=3.6 <3.7" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.1"
-pytest-cov = "^3.0.0"
+pytest-cov = "^4.0.0"
 codecov = "^2.1.12"
 mypy = "^0.961"
 autoflake = "^1.3"
