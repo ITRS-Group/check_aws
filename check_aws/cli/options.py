@@ -10,7 +10,7 @@ from .actions import CredentialsFileSetter, DimensionsSerializer
 class CommandArguments:
     namespace: str = ""
     metric: str = ""
-    unit: str = None
+    unit: str = ""
     region: str = ""
     credentials_file: str = ""
     profile: str = "default"

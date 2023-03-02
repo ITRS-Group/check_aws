@@ -16,11 +16,8 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 AutoReq: no
 %if 0%{?rhel} >= 8
-BuildRequires: python3-devel
-Requires: python3
-Requires: python3-boto3
-Requires: python3-dataclasses
-Requires: python3-nagiosplugin
+BuildRequires: python39-devel
+BuildRequires: python39-pip
 %else
 Requires: python36
 Requires(post): python36
@@ -52,38 +49,31 @@ export LC_ALL=en_US.UTF-8
 # Upgrade to pip version used for building the wheels in pre-build step
 %{__python3} -m pip install --user --no-index -f dist/ --upgrade pip
 
-%if 0%{?rhel} >= 8
-# Install check_aws into %%python3_sitelib and require dependencies from rpm repos.
-%{__python3} -m pip install -I --no-deps --root %{buildroot} dist/check_aws*.whl
-%{__sed} -i -e '1 s|^#!.*|#!%{__python3} -I|' %{profile_source_path}
-%else
 # Ship pre-built binary wheels, to be installed in %%post.
 %{__install} --directory %{buildroot}%{app_install_path}/wheels
 %{__install} -m 644 -t %{buildroot}%{app_install_path}/wheels dist/*.whl
-%endif
 
 %{__install} -Dp %{profile_source_path} %{buildroot}%{check_install_path}
 
 # Install all wheels in /test dir, for -test subpackage.
-%{__rm} -f dist/check_aws*
 %{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
 	--prefix %{app_install_path}/test --root %{buildroot} dist/*.whl
+
+%{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
+	--prefix %{app_install_path}/test --root %{buildroot} test-wheels/*.whl
 
 # Metadata
 %{__mkdir} -p -m 0755 %buildroot%prefix/metadata
 %{__install} -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/
 
-
-%if 0%{?rhel} < 8
 %post
 cd %{app_install_path}
 %{__rm} -rf dist venv
-/usr/bin/python3 -m venv venv
+%{__python3} -m venv venv
 # First install the pip version that was used in the build
 venv/bin/pip --quiet install --upgrade -f wheels --no-index --no-deps pip
 # Then install all the remaining packages
 venv/bin/pip --quiet install --upgrade -f wheels --no-index check_aws
-%endif
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -97,13 +87,9 @@ fi
 
 
 %files
-%if 0%{?rhel} >= 8
-%python3_sitelib/check_aws*
-%else
 %{app_install_path}
 %exclude %{app_install_path}/test
 %ghost %dir %{app_install_path}/venv
-%endif
 %{check_install_path}
 %license LICENSE
 %doc README.md
@@ -117,6 +103,8 @@ fi
 rm -rf %buildroot
 
 %changelog
+* Tue Mar  7 2023 Jerson Dumalaon <jdumalaon@itrsgroup.com>
+- Update to use Python3.9
 * Mon Jan 17 2022 Erik Sjöström <esjostrom@itrsgroup.com>
 - Package metadata.
 * Thu Jan  6 2022 Aksel Sjögren <asjogren@itrsgroup.com>
