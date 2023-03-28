@@ -3,24 +3,30 @@ pre:
     set -ex
     rm -rf venv dist
 
-    python3 -m venv venv
+    python3.9 -m venv venv
     source venv/bin/activate
     pip install --upgrade pip
-    pip install poetry wheel==0.34.2 pytest
+    pip install poetry wheel pytest
 
     cd src
 
+    # Install all dependencies to run tests
+    poetry install --no-interaction --no-root
+    poetry run mypy check_aws
+    poetry run autoflake --recursive check_aws tests
+    poetry run black check_aws tests --check
+
     # We build all the wheels now while we can access PyPI and github repos
     poetry build -f wheel  # writes to dist/
-    poetry export --dev --without-hashes -f requirements.txt > requirements.txt
+    poetry export -f requirements.txt --without-hashes -o requirements.txt
     pip wheel -r requirements.txt -w dist/
-
-    # Install all dependencies to run tests
-    pip install dist/*.whl
-    python -m pytest
+    rm requirements.txt
 
     # Also include the current pip version so it can be used in the installation
     pip wheel pip -w dist/
+
+    # Download/build wheels for "-test" package.
+    pip wheel -w test-wheels pytest~=7.0.1 pytest-cov~=4.0.0 codecov~=2.1.12
 
 post:
   steps: |
@@ -35,8 +41,8 @@ post:
       # Prevent Python from importing check_aws from CWD instead of the installed package:
       mv check_aws{,.src}
 
-      PYTHONPATH=/opt/monitor/op5/check_aws/test/lib/python3.6/site-packages
-      PYTHONPATH=$PYTHONPATH:/opt/monitor/op5/check_aws/test/lib64/python3.6/site-packages
+      PYTHONPATH=/opt/monitor/op5/check_aws/test/lib/python3.9/site-packages
+      PYTHONPATH=$PYTHONPATH:/opt/monitor/op5/check_aws/test/lib64/python3.9/site-packages
       export PYTHONPATH
-      python3 -m pytest -v
+      python3.9 -m pytest -v
     fi
