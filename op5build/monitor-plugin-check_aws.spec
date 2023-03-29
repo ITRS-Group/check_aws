@@ -18,6 +18,7 @@ AutoReq: no
 %if 0%{?rhel} >= 8
 BuildRequires: python39-devel
 BuildRequires: python39-pip
+Requires(post): python39
 %else
 Requires: python36
 Requires(post): python36
