@@ -1,5 +1,7 @@
 # check_aws: Nagios-compatible plugin for monitoring AWS
 
+[![image](https://badgen.net/travis/ITRS-Group/check_aws)](https://travis-ci.org/ITRS-Group/check_aws)
+[![image](https://badgen.net/lgtm/grade/g/ITRS-Group/check_aws)](https://lgtm.com/projects/g/ITRS-Group/check_aws)
 [![image](https://badgen.net/codecov/c/github/ITRS-Group/check_aws)](https://codecov.io/gh/ITRS-Group/check_aws)
 [![image](https://badgen.net/badge/license/GPLv3/blue)](https://raw.githubusercontent.com/ITRS-Group/check_aws/master/LICENSE)
 
