@@ -45,4 +45,9 @@ post:
       PYTHONPATH=$PYTHONPATH:/opt/monitor/op5/check_aws/test/lib64/python3.9/site-packages
       export PYTHONPATH
       python3.9 -m pytest -v
+      if [ -n "${CODECOV_TOKEN}" ]; then
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov -t ${CODECOV_TOKEN}
+      fi
     fi
