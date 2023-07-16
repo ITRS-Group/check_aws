@@ -16,7 +16,7 @@ pytest = "^7.0.1"
 pytest-cov = "^4.0.0"
 mypy = "^0.971"
 autoflake = "^2.0.1"
-black = { version = "23.1.0", allow-prereleases = true }
+black = { version = "23.7.0", allow-prereleases = true }
 isort = "^5.7.0"
 
 [build-system]
