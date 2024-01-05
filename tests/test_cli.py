@@ -32,6 +32,14 @@ def test_non_file(cli):
         cli({**CLI_DEFAULTS, "--credentials": None})
 
 
+def test_profile_default(cli):
+    assert cli(CLI_DEFAULTS).profile == CommandArguments.profile
+
+
+def test_profile_valid(cli):
+    assert cli({**CLI_DEFAULTS, "-p": "test"}).profile == "test"
+
+
 def test_namespace_valid(cli):
     assert cli({**CLI_DEFAULTS, "-n": "test"}).namespace == "test"
     assert cli({**CLI_DEFAULTS, "-n": "test123"}).namespace == "test123"
