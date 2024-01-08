@@ -16,7 +16,9 @@ from .exceptions import (
 class CloudWatchResource(nagiosplugin.Resource):
     def __init__(self, cmdargs, *args, **kwargs):
         self.cmdargs = cmdargs
-        self.session = boto3.Session(region_name=cmdargs.region)
+        self.session = boto3.Session(
+            region_name=cmdargs.region, profile_name=cmdargs.profile
+        )
         super(CloudWatchResource, self).__init__(*args, **kwargs)
 
     def _query_make(self, cmdargs, validate=True):
