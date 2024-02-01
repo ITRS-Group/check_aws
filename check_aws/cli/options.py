@@ -22,6 +22,7 @@ class CommandArguments:
     critical: int = 0
     verbosity: int = 0
     delta: int = 0
+    timeout: int = 0
 
 
 opts = [
@@ -182,6 +183,17 @@ opts = [
             "nargs": "?",
             "default": CommandArguments.credentials_file,
             "help": "File containing AWS credentials",
+        },
+    ),
+    (
+        ["-t", "--timeout"],
+        {
+            "dest": "timeout",
+            "action": "store",
+            "type": int,
+            "default": CommandArguments.timeout,
+            "required": False,
+            "help": "Timeout in seconds",
         },
     ),
 ]
