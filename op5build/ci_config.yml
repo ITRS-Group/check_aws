@@ -7,6 +7,7 @@ pre:
     source venv/bin/activate
     pip install --upgrade pip
     pip install poetry wheel pytest
+    poetry self add poetry-plugin-export
 
     cd src
 
