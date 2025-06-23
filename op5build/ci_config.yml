@@ -1,14 +1,14 @@
 pre:
   steps: |
     set -ex
-    rm -rf venv dist
+    cd src
+    rm -rf venv dist wheels test-wheels
 
-    python3.9 -m venv venv
+    python3.12 -m venv venv
     source venv/bin/activate
     pip install --upgrade pip
-    pip install poetry wheel pytest
-
-    cd src
+    pip install poetry wheel
+    poetry self add poetry-plugin-export
 
     # Install all dependencies to run tests
     poetry install --no-interaction --no-root
@@ -22,11 +22,15 @@ pre:
     pip wheel -r requirements.txt -w dist/
     rm requirements.txt
 
+    # Download/build wheels for "-test" package.
+    poetry export --with dev -f requirements.txt --without-hashes -o test-requirements.txt
+    pip wheel -r test-requirements.txt -w test-wheels/
+    rm test-requirements.txt
+    cp -p dist/check_aws*.whl test-wheels/
+
     # Also include the current pip version so it can be used in the installation
     pip wheel pip -w dist/
-
-    # Download/build wheels for "-test" package.
-    pip wheel -w test-wheels pytest~=7.0.1 pytest-cov~=4.0.0
+    pip wheel pip -w test-wheels/
 
 post:
   steps: |
@@ -41,10 +45,10 @@ post:
       # Prevent Python from importing check_aws from CWD instead of the installed package:
       mv check_aws{,.src}
 
-      PYTHONPATH=/opt/monitor/op5/check_aws/test/lib/python3.9/site-packages
-      PYTHONPATH=$PYTHONPATH:/opt/monitor/op5/check_aws/test/lib64/python3.9/site-packages
-      export PYTHONPATH
-      python3.9 -m pytest -v
+      # Activate venv installed for test package
+      source /opt/monitor/op5/check_aws/test/venv/bin/activate
+      # Run tests
+      python -m pytest -v
       if [ -n "${CODECOV_TOKEN}" ]; then
         curl -Os https://uploader.codecov.io/latest/linux/codecov
         chmod +x codecov

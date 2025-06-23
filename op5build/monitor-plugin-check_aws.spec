@@ -47,34 +47,29 @@ Requires: monitor-plugin-check_aws == %{version}-%{release}
 %install
 export LC_ALL=en_US.UTF-8
 
-# Upgrade to pip version used for building the wheels in pre-build step
-%{__python3} -m pip install --user --no-index -f dist/ --upgrade pip
-
 # Ship pre-built binary wheels, to be installed in %%post.
-%{__install} --directory %{buildroot}%{app_install_path}/wheels
-%{__install} -m 644 -t %{buildroot}%{app_install_path}/wheels dist/*.whl
+%{__install} -Dp -m 0644 -t %{buildroot}%{app_install_path}/wheels dist/*.whl
 
 %{__install} -Dp %{profile_source_path} %{buildroot}%{check_install_path}
 
-# Install all wheels in /test dir, for -test subpackage.
-%{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
-	--prefix %{app_install_path}/test --root %{buildroot} dist/*.whl
-
-%{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
-	--prefix %{app_install_path}/test --root %{buildroot} test-wheels/*.whl
+# Ship pre-built binary wheels, to be installed in %%posttrans test.
+%{__install} -Dp -m 0644 -t %{buildroot}%{app_install_path}/test/test-wheels test-wheels/*.whl
 
 # Metadata
-%{__mkdir} -p -m 0755 %buildroot%prefix/metadata
-%{__install} -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/
+%{__install} -Dp -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/check_aws.metadata
 
 %post
 cd %{app_install_path}
-%{__rm} -rf dist venv
+# Remove old venv
+%{__rm} -rf venv
+# Create a new venv
 %{__python3} -m venv venv
 # First install the pip version that was used in the build
-venv/bin/pip --quiet install --upgrade -f wheels --no-index --no-deps pip
+venv/bin/pip install --upgrade -f wheels --no-index --no-deps pip
 # Then install all the remaining packages
-venv/bin/pip --quiet install --upgrade -f wheels --no-index check_aws
+venv/bin/pip install --upgrade -f wheels --no-index check_aws
+# Remove the wheels directory, no longer needed
+%{__rm} -rf wheels
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -86,6 +81,18 @@ fi
 # changed to current path, as venv created in %%post is left there.
 %{__rm} -rf %{dirname:%{app_install_path}}/nagios_aws || :
 
+%posttrans test
+cd %{app_install_path}/test
+# Remove old venv
+%{__rm} -rf venv
+# Create a new venv
+%{__python3} -m venv venv
+# First install the pip version that was used in the build
+venv/bin/pip install --upgrade -f test-wheels --no-index --no-deps pip
+# Then install all the remaining packages
+venv/bin/pip install --upgrade --no-index test-wheels/*.whl
+# Remove the test-wheels directory, no longer needed
+%{__rm} -rf test-wheels
 
 %files
 %{app_install_path}
