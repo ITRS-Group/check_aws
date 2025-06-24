@@ -16,9 +16,9 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 AutoReq: no
 %if 0%{?rhel} >= 8
-BuildRequires: python39-devel
-BuildRequires: python39-pip
-Requires(post): python39
+BuildRequires: python3.12-devel
+BuildRequires: python3.12-pip
+Requires(post): python3.12
 %else
 Requires: python36
 Requires(post): python36
