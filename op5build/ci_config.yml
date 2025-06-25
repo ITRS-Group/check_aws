@@ -23,7 +23,7 @@ pre:
     rm requirements.txt
 
     # Download/build wheels for "-test" package.
-    poetry export --with dev -f requirements.txt --without-hashes -o test-requirements.txt
+    poetry export --with test -f requirements.txt --without-hashes -o test-requirements.txt
     pip wheel -r test-requirements.txt -w test-wheels/
     rm test-requirements.txt
     cp -p dist/check_aws*.whl test-wheels/

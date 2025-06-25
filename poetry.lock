@@ -62,18 +62,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.38.41"
+version = "1.38.43"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "boto3-1.38.41-py3-none-any.whl", hash = "sha256:6119e9f272b9f004f052ca78ce94d3fe10198bc159ae808f75c0e1b9c07518bd"},
-    {file = "boto3-1.38.41.tar.gz", hash = "sha256:c6710fc533c8e1f5d1f025c74ffe1222c3659094cd51c076ec50c201a54c8f22"},
+    {file = "boto3-1.38.43-py3-none-any.whl", hash = "sha256:2e3411bb43285caad1c8e1a3186d025ba65a6342e26bad493f6b8feb3d1a1680"},
+    {file = "boto3-1.38.43.tar.gz", hash = "sha256:9b0ff0b34c9cf7328546c532c20b081f09055ff485f4d57c19146c36877048c5"},
 ]
 
 [package.dependencies]
-botocore = ">=1.38.41,<1.39.0"
+botocore = ">=1.38.43,<1.39.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.13.0,<0.14.0"
 
@@ -82,14 +82,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.38.41"
+version = "1.38.43"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "botocore-1.38.41-py3-none-any.whl", hash = "sha256:06069a06f1352accb1f6c9505d6e323753627112be80a9d2e057c6d9c9779ffd"},
-    {file = "botocore-1.38.41.tar.gz", hash = "sha256:98e3fed636ebb519320c4b2d078db6fa6099b052b4bb9b5c66632a5a7fe72507"},
+    {file = "botocore-1.38.43-py3-none-any.whl", hash = "sha256:2ee60ac0b08e80e9be2aa2841d42e438d5bc4f82549560a682837655097a3db7"},
+    {file = "botocore-1.38.43.tar.gz", hash = "sha256:c453c5c16c157c5427058bb3cc2c5ad35ee2e43336f0ccbfcc6092c5635505c6"},
 ]
 
 [package.dependencies]
@@ -121,12 +121,12 @@ version = "0.4.6"
 description = "Cross-platform colored terminal text."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
-groups = ["dev"]
-markers = "sys_platform == \"win32\" or platform_system == \"Windows\""
+groups = ["dev", "test"]
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+markers = {dev = "platform_system == \"Windows\"", test = "sys_platform == \"win32\""}
 
 [[package]]
 name = "coverage"
@@ -134,7 +134,7 @@ version = "7.9.1"
 description = "Code coverage measurement for Python"
 optional = false
 python-versions = ">=3.9"
-groups = ["dev"]
+groups = ["test"]
 files = [
     {file = "coverage-7.9.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:cc94d7c5e8423920787c33d811c0be67b7be83c705f001f7180c7b186dcf10ca"},
     {file = "coverage-7.9.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:16aa0830d0c08a2c40c264cef801db8bc4fc0e1892782e45bcacbd5889270509"},
@@ -214,7 +214,7 @@ version = "2.1.0"
 description = "brain-dead simple config-ini parsing"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev"]
+groups = ["test"]
 files = [
     {file = "iniconfig-2.1.0-py3-none-any.whl", hash = "sha256:9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760"},
     {file = "iniconfig-2.1.0.tar.gz", hash = "sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7"},
@@ -331,7 +331,7 @@ version = "25.0"
 description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev"]
+groups = ["dev", "test"]
 files = [
     {file = "packaging-25.0-py3-none-any.whl", hash = "sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484"},
     {file = "packaging-25.0.tar.gz", hash = "sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f"},
@@ -372,7 +372,7 @@ version = "1.6.0"
 description = "plugin and hook calling mechanisms for python"
 optional = false
 python-versions = ">=3.9"
-groups = ["dev"]
+groups = ["test"]
 files = [
     {file = "pluggy-1.6.0-py3-none-any.whl", hash = "sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746"},
     {file = "pluggy-1.6.0.tar.gz", hash = "sha256:7dcc130b76258d33b90f61b658791dede3486c3e6bfb003ee5c9bfb396dd22f3"},
@@ -400,7 +400,7 @@ version = "2.19.2"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.8"
-groups = ["dev"]
+groups = ["test"]
 files = [
     {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
     {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
@@ -415,7 +415,7 @@ version = "8.4.1"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.9"
-groups = ["dev"]
+groups = ["test"]
 files = [
     {file = "pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7"},
     {file = "pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c"},
@@ -437,7 +437,7 @@ version = "4.1.0"
 description = "Pytest plugin for measuring coverage."
 optional = false
 python-versions = ">=3.7"
-groups = ["dev"]
+groups = ["test"]
 files = [
     {file = "pytest-cov-4.1.0.tar.gz", hash = "sha256:3904b13dfbfec47f003b8e77fd5b589cd11904a21ddf1ab38a64f204d6a10ef6"},
     {file = "pytest_cov-4.1.0-py3-none-any.whl", hash = "sha256:6ba70b9e97e69fcc3fb45bfeab2d0a138fb65c4d0d6a41ef33983ad114be8c3a"},
@@ -528,4 +528,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "47e15c534b342e92cdff9841e2216ba329e752cd404b207445f81bc59a0fe302"
+content-hash = "d7298d96cfde7bf0a5b7d16a4863c2c351f5889f657a9e09fbbb4700a59e3cfc"
