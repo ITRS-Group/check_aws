@@ -55,6 +55,10 @@ export LC_ALL=en_US.UTF-8
 # Metadata
 %{__install} -Dp -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/check_aws.metadata
 
+%pre
+# Remove old wheels directory created by previous versions
+%{__rm} -rf %{app_install_path}/wheels || :
+
 %post
 cd %{app_install_path}
 # Remove old venv
