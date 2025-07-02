@@ -18,19 +18,12 @@ pre:
 
     # We build all the wheels now while we can access PyPI and github repos
     poetry build -f wheel  # writes to dist/
-    poetry export -f requirements.txt --without-hashes -o requirements.txt
+    poetry export --with test -f requirements.txt --without-hashes -o requirements.txt
     pip wheel -r requirements.txt -w dist/
     rm requirements.txt
 
-    # Download/build wheels for "-test" package.
-    poetry export --with test -f requirements.txt --without-hashes -o test-requirements.txt
-    pip wheel -r test-requirements.txt -w test-wheels/
-    rm test-requirements.txt
-    cp -p dist/check_aws*.whl test-wheels/
-
     # Also include the current pip version so it can be used in the installation
     pip wheel pip -w dist/
-    pip wheel pip -w test-wheels/
 
 post:
   steps: |
@@ -45,8 +38,8 @@ post:
       # Prevent Python from importing check_aws from CWD instead of the installed package:
       mv check_aws{,.src}
 
-      # Activate venv installed for test package
-      source /opt/monitor/op5/check_aws/test/venv/bin/activate
+      # Activate venv
+      source /opt/monitor/op5/check_aws/venv/bin/activate
       # Run tests
       python -m pytest -v
       if [ -n "${CODECOV_TOKEN}" ]; then
