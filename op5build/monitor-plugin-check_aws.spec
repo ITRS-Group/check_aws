@@ -16,9 +16,9 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 AutoReq: no
 %if 0%{?rhel} >= 8
-BuildRequires: python39-devel
-BuildRequires: python39-pip
-Requires(post): python39
+BuildRequires: python3.12-devel
+BuildRequires: python3.12-pip
+Requires(post): python3.12
 %else
 Requires: python36
 Requires(post): python36
@@ -47,34 +47,30 @@ Requires: monitor-plugin-check_aws == %{version}-%{release}
 %install
 export LC_ALL=en_US.UTF-8
 
-# Upgrade to pip version used for building the wheels in pre-build step
-%{__python3} -m pip install --user --no-index -f dist/ --upgrade pip
-
 # Ship pre-built binary wheels, to be installed in %%post.
-%{__install} --directory %{buildroot}%{app_install_path}/wheels
-%{__install} -m 644 -t %{buildroot}%{app_install_path}/wheels dist/*.whl
+%{__install} -Dp -m 0644 -t %{buildroot}%{app_install_path}/wheels dist/*.whl
 
 %{__install} -Dp %{profile_source_path} %{buildroot}%{check_install_path}
 
-# Install all wheels in /test dir, for -test subpackage.
-%{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
-	--prefix %{app_install_path}/test --root %{buildroot} dist/*.whl
-
-%{__python3} -m pip install -I --no-index --no-warn-script-location --no-deps \
-	--prefix %{app_install_path}/test --root %{buildroot} test-wheels/*.whl
-
 # Metadata
-%{__mkdir} -p -m 0755 %buildroot%prefix/metadata
-%{__install} -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/
+%{__install} -Dp -m 0644 op5build/check_aws.metadata %buildroot%prefix/metadata/check_aws.metadata
+
+%pre
+# Remove old wheels directory created by previous versions
+%{__rm} -rf %{app_install_path}/wheels || :
 
 %post
 cd %{app_install_path}
-%{__rm} -rf dist venv
+# Remove old venv
+%{__rm} -rf venv
+# Create a new venv
 %{__python3} -m venv venv
 # First install the pip version that was used in the build
-venv/bin/pip --quiet install --upgrade -f wheels --no-index --no-deps pip
+venv/bin/pip install --upgrade -f wheels --no-index --no-deps pip
 # Then install all the remaining packages
-venv/bin/pip --quiet install --upgrade -f wheels --no-index check_aws
+venv/bin/pip install --upgrade --no-index wheels/*.whl
+# Remove the wheels directory, no longer needed
+%{__rm} -rf wheels
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -86,7 +82,6 @@ fi
 # changed to current path, as venv created in %%post is left there.
 %{__rm} -rf %{dirname:%{app_install_path}}/nagios_aws || :
 
-
 %files
 %{app_install_path}
 %exclude %{app_install_path}/test
@@ -97,13 +92,12 @@ fi
 %dir %attr(0755,-,-) %prefix/metadata/
 %prefix/metadata/check_aws.metadata
 
-%files test
-%{app_install_path}/test
-
 %clean
 rm -rf %buildroot
 
 %changelog
+* Wed Jul  2 2025 Jerick Macario <jmacario@itrsgroup.com>
+- Update to use Python3.12
 * Tue Mar  7 2023 Jerson Dumalaon <jdumalaon@itrsgroup.com>
 - Update to use Python3.9
 * Mon Jan 17 2022 Erik Sjöström <esjostrom@itrsgroup.com>

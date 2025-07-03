@@ -67,6 +67,10 @@ parts/
 sdist/
 var/
 wheels/
+test-wheels/
+requirements.txt
+test-requirements.txt
+
 *.egg-info/
 .installed.cfg
 *.egg

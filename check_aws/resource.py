@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 import boto3
 import nagiosplugin
@@ -35,7 +35,7 @@ class CloudWatchResource(nagiosplugin.Resource):
             Metric statistics query
         """
 
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
         query = dict(
             Period=cmdargs.period,
             StartTime=now - timedelta(seconds=cmdargs.period + cmdargs.lag),
