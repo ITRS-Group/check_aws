@@ -2,6 +2,8 @@
 %define profile_source_path profiles/op5_monitor.py
 %define app_install_path /opt/monitor/op5/check_aws
 %define check_install_path /opt/plugins/check_aws.py
+%define python_ver 3.12
+%global __python3 /usr/bin/python%{python_ver}
 
 Summary: AWS Nagios plugin
 Name: monitor-plugin-check_aws
@@ -16,9 +18,9 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 AutoReq: no
 %if 0%{?rhel} >= 8
-BuildRequires: python3.12-devel
-BuildRequires: python3.12-pip
-Requires(post): python3.12
+BuildRequires: python%{python_ver}-devel
+BuildRequires: python%{python_ver}-pip
+Requires(post): python%{python_ver}
 %else
 Requires: python36
 Requires(post): python36
